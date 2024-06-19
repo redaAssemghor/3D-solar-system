@@ -2,9 +2,10 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
+import Moon from "./Moon";
 
 const Earth = ({ displacementScale }) => {
-  const earthRef = useRef<THREE.Mesh>();
+  const earthRef = useRef<THREE.Mesh>(null);
   const [earthTexture, earthNormalMap, earthSpecularMap, earthDisplacementMap] =
     useTexture([
       "/assets/earth_day.jpg",
@@ -14,19 +15,22 @@ const Earth = ({ displacementScale }) => {
     ]);
 
   useFrame(() => {
-    if (earthRef.current) earthRef.current.rotation.x += 0.001;
+    if (earthRef.current) earthRef.current.rotation.y += 0.005;
   });
   return (
-    <mesh ref={earthRef as React.MutableRefObject<THREE.Mesh | null>}>
-      <sphereGeometry args={[1, 32, 32]} />
-      <meshPhongMaterial
-        map={earthTexture}
-        normalMap={earthNormalMap}
-        specularMap={earthSpecularMap}
-        displacementMap={earthDisplacementMap}
-        displacementScale={displacementScale}
-      />
-    </mesh>
+    <group>
+      <mesh receiveShadow ref={earthRef}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshPhongMaterial
+          map={earthTexture}
+          normalMap={earthNormalMap}
+          specularMap={earthSpecularMap}
+          displacementMap={earthDisplacementMap}
+          displacementScale={displacementScale}
+        />
+      </mesh>
+      <Moon />
+    </group>
   );
 };
 

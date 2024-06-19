@@ -6,7 +6,9 @@ const MainContainer = () => {
     <>
       <color attach="background" args={["black"]} />
       <AnimatedStars />
-      <ambientLight />
+      <directionalLight castShadow position={[0, 0, 10]} />
+      <directionalLight castShadow position={[0, 0, -10]} />
+
       <Earth displacementScale={0.05} />
     </>
   );
