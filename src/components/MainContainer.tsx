@@ -1,13 +1,14 @@
-import { OrbitControls, Stars } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import AnimatedStars from "./AnimatedStars";
+import Earth from "./Earth";
 
 const MainContainer = () => {
   return (
-    <Canvas>
+    <>
       <color attach="background" args={["black"]} />
-      <OrbitControls />
-      <Stars />
-    </Canvas>
+      <AnimatedStars />
+      <ambientLight />
+      <Earth displacementScale={0.05} />
+    </>
   );
 };
 
