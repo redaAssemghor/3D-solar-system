@@ -25,9 +25,9 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
   const orbitAnimation = useCallback(() => {
     if (groupRef.current) {
       groupRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.8) * 10;
+        Math.sin(clockRef.current.getElapsedTime() * 0.2) * 10;
       groupRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.8) * 10;
+        Math.cos(clockRef.current.getElapsedTime() * 0.2) * 10;
     }
   }, []);
 
@@ -40,7 +40,7 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
 
   return (
     <group ref={groupRef} position={[7, 0, 0]}>
-      <mesh receiveShadow castShadow ref={earthRef}>
+      <mesh ref={earthRef} onDoubleClick={() => console.log("earth")}>
         <sphereGeometry args={[1, 32, 32]} />
         <meshPhongMaterial
           map={earthTexture}

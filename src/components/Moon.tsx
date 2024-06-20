@@ -24,7 +24,7 @@ const Moon = React.memo(() => {
   useFrame(moonAnimations);
 
   return (
-    <mesh receiveShadow castShadow ref={moonRef} position={[4, 0, 0]}>
+    <mesh ref={moonRef} position={[4, 0, 0]}>
       <sphereGeometry args={[0.5, 32, 32]} />
       <meshStandardMaterial map={moonTexture} />
     </mesh>
