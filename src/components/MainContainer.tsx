@@ -5,10 +5,10 @@ import Sun from "./Sun";
 const MainContainer = () => {
   return (
     <>
-      <color attach="background" args={["black"]} />
       <AnimatedStars />
       <directionalLight castShadow position={[0, 0, 10]} />
       <directionalLight castShadow position={[0, 0, -10]} />
+      <ambientLight intensity={0.2} />
 
       <Sun />
       <Earth displacementScale={0.05} />

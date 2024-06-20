@@ -1,22 +1,25 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import * as THREE from "three";
 
-const SpaceStation = () => {
+const SpaceStation = React.memo(() => {
   const { scene } = useGLTF("/assets/ISS/ISS_stationary.gltf");
   const stationRef = useRef<THREE.Mesh>(null);
+  const clockRef = useRef(new THREE.Clock());
   const xAxis = 2;
 
-  useFrame(({ clock }) => {
+  const issOrbit = useCallback(() => {
     if (stationRef.current) {
       // axis rotation
       stationRef.current.position.x =
-        Math.sin(clock.getElapsedTime() * 2) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 2) * xAxis;
       stationRef.current.position.z =
-        Math.cos(clock.getElapsedTime() * 2) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 2) * xAxis;
     }
-  });
+  }, []);
+
+  useFrame(issOrbit);
 
   return (
     <mesh>
@@ -28,6 +31,6 @@ const SpaceStation = () => {
       />
     </mesh>
   );
-};
+});
 
 export default SpaceStation;
