@@ -1,4 +1,4 @@
-import { useTexture } from "@react-three/drei";
+import { Text, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -59,24 +59,37 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   }, [hovered]);
 
   return (
-    <mesh
-      ref={jupiterRef}
-      onDoubleClick={onToggleFollow}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-      position={[0, 0, 0]}
-    >
-      <sphereGeometry args={[3, 32, 32]} />
-      <meshStandardMaterial
-        map={jupiterTexture}
-        emissive={
-          hovered || isFollowed
-            ? new THREE.Color(0xffffff)
-            : new THREE.Color(0x000000)
-        }
-        emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
-      />
-    </mesh>
+    <>
+      <mesh
+        ref={jupiterRef}
+        onDoubleClick={onToggleFollow}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        position={[0, 0, 0]}
+      >
+        <sphereGeometry args={[3, 32, 32]} />
+        <meshStandardMaterial
+          map={jupiterTexture}
+          emissive={
+            hovered || isFollowed
+              ? new THREE.Color(0xffffff)
+              : new THREE.Color(0x000000)
+          }
+          emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
+        />
+      </mesh>
+      {hovered && (
+        <Text
+          position={[0, 4, 0]}
+          fontSize={2}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Jupiter
+        </Text>
+      )}
+    </>
   );
 };
 
