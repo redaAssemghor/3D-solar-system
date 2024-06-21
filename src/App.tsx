@@ -1,19 +1,18 @@
-import { OrbitControls } from "@react-three/drei";
-import MainContainer from "./components/MainContainer";
-
-import { Canvas } from "@react-three/fiber";
+import Header from "./components/Header";
+import AnnouncementsBar from "./components/AnnouncementsBar.";
+import SimulationPage from "./pages/SimulationPage";
+import { Route, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage";
 
 function App() {
   return (
-    <div className="h-screen w-screen">
-      <Canvas
-        shadows
-        camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 10, 19.5] }}
-      >
-        <color attach="background" args={["black"]} />
-        <OrbitControls />
-        <MainContainer />
-      </Canvas>
+    <div className="h-screen w-screen overflow-hidden">
+      <AnnouncementsBar />
+      <Header />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/simulation" element={<SimulationPage />} />
+      </Routes>
     </div>
   );
 }
