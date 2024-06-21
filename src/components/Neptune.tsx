@@ -1,19 +1,22 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Neptune = React.memo(() => {
   const neptuneRef = useRef<THREE.Mesh>(null);
-  const [moonTexture] = useTexture(["/assets/neptune-texture-map.jpg"]);
+  const [neptuneTexture] = useTexture(["/assets/neptune-texture-map.jpg"]);
   const xAxis = 70;
   const clockRef = useRef(new THREE.Clock());
+  const [followNeptune, setFollowNeptune] = useState(false);
 
-  const moonAnimations = useCallback(() => {
+  const toggleFollowNeptune = () => {
+    setFollowNeptune((prev) => !prev);
+  };
+
+  const neptuneAnimations = useCallback(() => {
     if (neptuneRef.current) {
-      // orbit rotation
       neptuneRef.current.rotation.y += 0.005;
-      // axis rotation
       neptuneRef.current.position.x =
         Math.sin(clockRef.current.getElapsedTime() * 0.4) * xAxis;
       neptuneRef.current.position.z =
@@ -21,12 +24,16 @@ const Neptune = React.memo(() => {
     }
   }, []);
 
-  useFrame(moonAnimations);
+  useFrame(({ camera }) => {
+    neptuneAnimations();
+    const neptunePosition = neptuneRef.current?.position;
+    if (followNeptune && neptunePosition) camera.lookAt(neptunePosition);
+  });
 
   return (
-    <mesh ref={neptuneRef}>
+    <mesh ref={neptuneRef} onDoubleClick={toggleFollowNeptune}>
       <sphereGeometry args={[2.3, 32, 32]} />
-      <meshStandardMaterial map={moonTexture} />
+      <meshStandardMaterial map={neptuneTexture} />
     </mesh>
   );
 });

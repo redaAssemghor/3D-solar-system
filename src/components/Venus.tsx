@@ -1,32 +1,39 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Venus = React.memo(() => {
   const venusRef = useRef<THREE.Mesh>(null);
-  const [moonTexture] = useTexture(["/assets/venus-texture-map.jpg"]);
+  const [venusTexture] = useTexture(["/assets/venus-texture-map.jpg"]);
   const xAxis = 10;
   const clockRef = useRef(new THREE.Clock());
+  const [followVenus, setFollowVenus] = useState(false);
 
-  const moonAnimations = useCallback(() => {
+  const toggleFollowVenus = () => {
+    setFollowVenus((prev) => !prev);
+  };
+
+  const venusAnimations = useCallback(() => {
     if (venusRef.current) {
-      // orbit rotation
       venusRef.current.rotation.x += 0.005;
-      // axis rotation
       venusRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 1.5) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.5) * xAxis;
       venusRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 1.5) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.5) * xAxis;
     }
   }, []);
 
-  useFrame(moonAnimations);
+  useFrame(({ camera }) => {
+    venusAnimations();
+    const venusPosition = venusRef.current?.position;
+    if (followVenus && venusPosition) camera.lookAt(venusPosition);
+  });
 
   return (
-    <mesh ref={venusRef}>
+    <mesh ref={venusRef} onDoubleClick={toggleFollowVenus}>
       <sphereGeometry args={[1.1, 32, 32]} />
-      <meshStandardMaterial map={moonTexture} />
+      <meshStandardMaterial map={venusTexture} />
     </mesh>
   );
 });
