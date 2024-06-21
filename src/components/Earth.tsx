@@ -13,6 +13,7 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
   const earthRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const clockRef = useRef(new THREE.Clock());
+  const orbitAxis = 20;
 
   const [earthTexture, earthNormalMap, earthSpecularMap, earthDisplacementMap] =
     useTexture([
@@ -25,9 +26,9 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
   const orbitAnimation = useCallback(() => {
     if (groupRef.current) {
       groupRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.2) * 10;
+        Math.sin(clockRef.current.getElapsedTime() * 1) * orbitAxis;
       groupRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.2) * 10;
+        Math.cos(clockRef.current.getElapsedTime() * 1) * orbitAxis;
     }
   }, []);
 
@@ -39,9 +40,9 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
   useFrame(rotationAnimation);
 
   return (
-    <group ref={groupRef} position={[7, 0, 0]}>
-      <mesh ref={earthRef} onDoubleClick={() => console.log("earth")}>
-        <sphereGeometry args={[1, 32, 32]} />
+    <group ref={groupRef} position={[0, 0, 0]}>
+      <mesh ref={earthRef}>
+        <sphereGeometry args={[1.2, 32, 32]} />
         <meshPhongMaterial
           map={earthTexture}
           normalMap={earthNormalMap}
