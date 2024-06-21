@@ -1,13 +1,14 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Mars = React.memo(() => {
   const marsRef = useRef<THREE.Mesh>(null);
-  const [moonTexture] = useTexture(["/assets/mars-texture-map.jpg"]);
-  const xAxis = 28;
+  const [marsTexture] = useTexture(["/assets/mars-texture-map.jpg"]);
+  const xAxis = 22.79;
   const clockRef = useRef(new THREE.Clock());
+  const [hovered, setHovered] = useState(false);
   const [followMars, setFollowMars] = useState(false);
 
   const toggleFollowMars = () => {
@@ -16,13 +17,11 @@ const Mars = React.memo(() => {
 
   const marsAnimations = useCallback(() => {
     if (marsRef.current) {
-      // orbit rotation
-      marsRef.current.rotation.x += 0.005;
-      // axis rotation
+      marsRef.current.rotation.y += 0.005;
       marsRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.2) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.09) * xAxis;
       marsRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.2) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.09) * xAxis;
     }
   }, []);
 
@@ -32,10 +31,28 @@ const Mars = React.memo(() => {
     if (followMars && marsPosition) camera.lookAt(marsPosition);
   });
 
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
+
   return (
-    <mesh ref={marsRef} onDoubleClick={toggleFollowMars}>
-      <sphereGeometry args={[1, 32, 32]} />
-      <meshStandardMaterial map={moonTexture} />
+    <mesh
+      ref={marsRef}
+      onDoubleClick={toggleFollowMars}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      position={[0, 0, 0]}
+    >
+      <sphereGeometry args={[0.53, 32, 32]} />
+      <meshStandardMaterial
+        map={marsTexture}
+        emissive={
+          hovered || followMars
+            ? new THREE.Color(0xffffff)
+            : new THREE.Color(0x000000)
+        }
+        emissiveIntensity={hovered || followMars ? 0.15 : 0}
+      />
     </mesh>
   );
 });

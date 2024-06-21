@@ -1,6 +1,6 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Saturn = React.memo(() => {
@@ -8,10 +8,11 @@ const Saturn = React.memo(() => {
   const ringsRef = useRef<THREE.Mesh>(null);
   const [saturnTexture, ringsTexture] = useTexture([
     "/assets/saturn-texture-map.jpg",
-    "/assets/saturn-texture-map.jpg",
+    "/assets/saturn-ring-texture-map.png",
   ]);
-  const orbitRadius = 50;
+  const xAxis = 44.95;
   const clockRef = useRef(new THREE.Clock());
+  const [hovered, setHovered] = useState(false);
   const [followSaturn, setFollowSaturn] = useState(false);
 
   const toggleFollowSaturn = () => {
@@ -22,16 +23,16 @@ const Saturn = React.memo(() => {
     if (saturnRef.current) {
       saturnRef.current.rotation.y += 0.005;
       saturnRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.5) * orbitRadius;
+        Math.sin(clockRef.current.getElapsedTime() * 0.05) * xAxis;
       saturnRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.5) * orbitRadius;
+        Math.cos(clockRef.current.getElapsedTime() * 0.05) * xAxis;
     }
     if (ringsRef.current) {
-      ringsRef.current.rotation.y += 0.005;
+      ringsRef.current.rotation.x = Math.PI / 2;
       ringsRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.5) * orbitRadius;
+        Math.sin(clockRef.current.getElapsedTime() * 0.05) * xAxis;
       ringsRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.5) * orbitRadius;
+        Math.cos(clockRef.current.getElapsedTime() * 0.05) * xAxis;
     }
   }, []);
 
@@ -41,22 +42,37 @@ const Saturn = React.memo(() => {
     if (followSaturn && saturnPosition) camera.lookAt(saturnPosition);
   });
 
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
+
   return (
     <>
       <mesh
         ref={saturnRef}
-        position={[1, 0, 0]}
         onDoubleClick={toggleFollowSaturn}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        position={[0, 0, 0]}
       >
-        <sphereGeometry args={[3, 32, 32]} />
-        <meshStandardMaterial map={saturnTexture} />
-      </mesh>
-      <mesh ref={ringsRef}>
-        <ringGeometry args={[4, 5, 64]} />
+        <sphereGeometry args={[2.4, 32, 32]} />
         <meshStandardMaterial
+          map={saturnTexture}
+          emissive={
+            hovered || followSaturn
+              ? new THREE.Color(0xffffff)
+              : new THREE.Color(0x000000)
+          }
+          emissiveIntensity={hovered || followSaturn ? 0.15 : 0}
+        />
+      </mesh>
+      <mesh ref={ringsRef} position={[0, 0, 0]}>
+        <ringGeometry args={[2.6, 4, 64]} />
+        <meshBasicMaterial
           map={ringsTexture}
           side={THREE.DoubleSide}
           transparent={true}
+          opacity={5}
         />
       </mesh>
     </>

@@ -8,14 +8,14 @@ const Sun = React.memo(() => {
   const sunRef = useRef<THREE.Mesh>(null);
 
   const sunRotation = useCallback(() => {
-    if (sunRef.current) sunRef.current.rotation.y += 0.004;
+    if (sunRef.current) sunRef.current.rotation.y += 0.00025;
   }, []);
 
   useFrame(sunRotation);
 
   return (
     <mesh ref={sunRef} position={[0, 0, 0]}>
-      <sphereGeometry args={[2, 32, 32]} />
+      <sphereGeometry args={[4, 32, 32]} />
       <meshPhongMaterial
         map={sunTexture}
         emissiveMap={sunTexture}

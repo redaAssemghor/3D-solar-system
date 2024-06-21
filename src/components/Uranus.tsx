@@ -1,13 +1,14 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Uranus = React.memo(() => {
   const uranusRef = useRef<THREE.Mesh>(null);
   const [uranusTexture] = useTexture(["/assets/uranus-texture-map.jpg"]);
-  const xAxis = 60;
+  const xAxis = 28.7;
   const clockRef = useRef(new THREE.Clock());
+  const [hovered, setHovered] = useState(false);
   const [followUranus, setFollowUranus] = useState(false);
 
   const toggleFollowUranus = () => {
@@ -18,9 +19,9 @@ const Uranus = React.memo(() => {
     if (uranusRef.current) {
       uranusRef.current.rotation.y += 0.005;
       uranusRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.4) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.04) * xAxis;
       uranusRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.4) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.04) * xAxis;
     }
   }, []);
 
@@ -30,10 +31,28 @@ const Uranus = React.memo(() => {
     if (followUranus && uranusPosition) camera.lookAt(uranusPosition);
   });
 
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+  }, [hovered]);
+
   return (
-    <mesh ref={uranusRef} onDoubleClick={toggleFollowUranus}>
-      <sphereGeometry args={[2.4, 32, 32]} />
-      <meshStandardMaterial map={uranusTexture} />
+    <mesh
+      ref={uranusRef}
+      onDoubleClick={toggleFollowUranus}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      position={[0, 0, 0]}
+    >
+      <sphereGeometry args={[2.3, 32, 32]} />
+      <meshStandardMaterial
+        map={uranusTexture}
+        emissive={
+          hovered || followUranus
+            ? new THREE.Color(0xffffff)
+            : new THREE.Color(0x000000)
+        }
+        emissiveIntensity={hovered || followUranus ? 0.15 : 0}
+      />
     </mesh>
   );
 });
