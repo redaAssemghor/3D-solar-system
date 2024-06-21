@@ -2,14 +2,21 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 import Moon from "./Moon";
 import SpaceStation from "./SpaceStation";
 
 interface EarthProps {
   displacementScale: number;
+  isFollowed: boolean;
+  onToggleFollow: () => void;
 }
 
-const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
+const Earth: React.FC<EarthProps> = ({
+  displacementScale,
+  isFollowed,
+  onToggleFollow,
+}) => {
   const earthRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const [earthTexture, earthNormalMap, earthSpecularMap, earthDisplacementMap] =
@@ -19,14 +26,9 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
       "/assets/earth_specular.jpg",
       "/assets/earth_displacement.jpg",
     ]);
-  const xAxis = 14.96;
+  const xAxis = 23;
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
-  const [followEarth, setFollowEarth] = useState(false);
-
-  const toggleFollowEarth = () => {
-    setFollowEarth((prev) => !prev);
-  };
 
   const orbitAnimation = useCallback(() => {
     if (groupRef.current) {
@@ -45,7 +47,27 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
     orbitAnimation();
     rotationAnimation();
     const earthPosition = groupRef.current?.position;
-    if (followEarth && earthPosition) camera.lookAt(earthPosition);
+
+    // Apply smooth camera transition using TWEEN
+    if (isFollowed && earthPosition) {
+      const targetPosition = new THREE.Vector3(
+        earthPosition.x + 10,
+        earthPosition.y + 2,
+        earthPosition.z + 5
+      );
+
+      // Create a new TWEEN for camera position
+      new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000) // Move to the target position over 1 second
+        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
+        .onUpdate(() => camera.lookAt(earthPosition)) // Continuously update the camera's lookAt position
+        .start();
+    }
+  });
+
+  // Update TWEEN animations
+  useFrame(() => {
+    TWEEN.update();
   });
 
   useEffect(() => {
@@ -55,7 +77,7 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
   return (
     <group
       ref={groupRef}
-      onDoubleClick={toggleFollowEarth}
+      onDoubleClick={onToggleFollow}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
@@ -68,12 +90,18 @@ const Earth: React.FC<EarthProps> = React.memo(({ displacementScale }) => {
           specularMap={earthSpecularMap}
           displacementMap={earthDisplacementMap}
           displacementScale={displacementScale}
+          emissive={
+            hovered || isFollowed
+              ? new THREE.Color(0xffffff)
+              : new THREE.Color(0x000000)
+          }
+          emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
         />
       </mesh>
       <SpaceStation />
       <Moon />
     </group>
   );
-});
+};
 
 export default Earth;

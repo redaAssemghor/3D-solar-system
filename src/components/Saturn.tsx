@@ -2,44 +2,65 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 
-const Saturn = React.memo(() => {
+interface PlanetProps {
+  isFollowed: boolean;
+  onToggleFollow: () => void;
+}
+
+const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const saturnRef = useRef<THREE.Mesh>(null);
   const ringsRef = useRef<THREE.Mesh>(null);
   const [saturnTexture, ringsTexture] = useTexture([
     "/assets/saturn-texture-map.jpg",
-    "/assets/saturn-ring-texture-map.png",
+    "/assets/saturn-rings-texture-map.png",
   ]);
-  const xAxis = 44.95;
+  const xAxis = 55;
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
-  const [followSaturn, setFollowSaturn] = useState(false);
-
-  const toggleFollowSaturn = () => {
-    setFollowSaturn((prev) => !prev);
-  };
 
   const saturnAnimations = useCallback(() => {
     if (saturnRef.current) {
       saturnRef.current.rotation.y += 0.005;
       saturnRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.05) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.06) * xAxis;
       saturnRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.05) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.06) * xAxis;
     }
     if (ringsRef.current) {
       ringsRef.current.rotation.x = Math.PI / 2;
       ringsRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.05) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.06) * xAxis;
       ringsRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.05) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.06) * xAxis;
     }
   }, []);
 
   useFrame(({ camera }) => {
     saturnAnimations();
     const saturnPosition = saturnRef.current?.position;
-    if (followSaturn && saturnPosition) camera.lookAt(saturnPosition);
+
+    // Apply smooth camera transition using TWEEN
+    if (isFollowed && saturnPosition) {
+      const targetPosition = new THREE.Vector3(
+        saturnPosition.x + 10,
+        saturnPosition.y + 2,
+        saturnPosition.z + 5
+      );
+
+      // Create a new TWEEN for camera position
+      new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000) // Move to the target position over 1 second
+        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
+        .onUpdate(() => camera.lookAt(saturnPosition)) // Continuously update the camera's lookAt position
+        .start();
+    }
+  });
+
+  // Update TWEEN animations
+  useFrame(() => {
+    TWEEN.update();
   });
 
   useEffect(() => {
@@ -50,7 +71,7 @@ const Saturn = React.memo(() => {
     <>
       <mesh
         ref={saturnRef}
-        onDoubleClick={toggleFollowSaturn}
+        onDoubleClick={onToggleFollow}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         position={[0, 0, 0]}
@@ -59,11 +80,11 @@ const Saturn = React.memo(() => {
         <meshStandardMaterial
           map={saturnTexture}
           emissive={
-            hovered || followSaturn
+            hovered || isFollowed
               ? new THREE.Color(0xffffff)
               : new THREE.Color(0x000000)
           }
-          emissiveIntensity={hovered || followSaturn ? 0.15 : 0}
+          emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
         />
       </mesh>
       <mesh ref={ringsRef} position={[0, 0, 0]}>
@@ -72,11 +93,11 @@ const Saturn = React.memo(() => {
           map={ringsTexture}
           side={THREE.DoubleSide}
           transparent={true}
-          opacity={5}
+          opacity={0.5}
         />
       </mesh>
     </>
   );
-});
+};
 
 export default Saturn;

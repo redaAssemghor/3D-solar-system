@@ -2,33 +2,54 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 
-const Uranus = React.memo(() => {
+interface PlanetProps {
+  isFollowed: boolean;
+  onToggleFollow: () => void;
+}
+
+const Uranus: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const uranusRef = useRef<THREE.Mesh>(null);
   const [uranusTexture] = useTexture(["/assets/uranus-texture-map.jpg"]);
-  const xAxis = 28.7;
+  const xAxis = 75;
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
-  const [followUranus, setFollowUranus] = useState(false);
-
-  const toggleFollowUranus = () => {
-    setFollowUranus((prev) => !prev);
-  };
 
   const uranusAnimations = useCallback(() => {
     if (uranusRef.current) {
       uranusRef.current.rotation.y += 0.005;
       uranusRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.04) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.06) * xAxis;
       uranusRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.04) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.06) * xAxis;
     }
   }, []);
 
   useFrame(({ camera }) => {
     uranusAnimations();
     const uranusPosition = uranusRef.current?.position;
-    if (followUranus && uranusPosition) camera.lookAt(uranusPosition);
+
+    // Apply smooth camera transition using TWEEN
+    if (isFollowed && uranusPosition) {
+      const targetPosition = new THREE.Vector3(
+        uranusPosition.x + 10,
+        uranusPosition.y + 2,
+        uranusPosition.z + 5
+      );
+
+      // Create a new TWEEN for camera position
+      new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000) // Move to the target position over 1 second
+        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
+        .onUpdate(() => camera.lookAt(uranusPosition)) // Continuously update the camera's lookAt position
+        .start();
+    }
+  });
+
+  // Update TWEEN animations
+  useFrame(() => {
+    TWEEN.update();
   });
 
   useEffect(() => {
@@ -38,7 +59,7 @@ const Uranus = React.memo(() => {
   return (
     <mesh
       ref={uranusRef}
-      onDoubleClick={toggleFollowUranus}
+      onDoubleClick={onToggleFollow}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
@@ -47,14 +68,14 @@ const Uranus = React.memo(() => {
       <meshStandardMaterial
         map={uranusTexture}
         emissive={
-          hovered || followUranus
+          hovered || isFollowed
             ? new THREE.Color(0xffffff)
             : new THREE.Color(0x000000)
         }
-        emissiveIntensity={hovered || followUranus ? 0.15 : 0}
+        emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
       />
     </mesh>
   );
-});
+};
 
 export default Uranus;

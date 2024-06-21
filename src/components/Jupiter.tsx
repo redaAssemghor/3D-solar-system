@@ -2,18 +2,19 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 
-const Jupiter = React.memo(() => {
+interface PlanetProps {
+  isFollowed: boolean;
+  onToggleFollow: () => void;
+}
+
+const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const jupiterRef = useRef<THREE.Mesh>(null);
   const [jupiterTexture] = useTexture(["/assets/jupiter-texture-map.jpg"]);
-  const xAxis = 38;
+  const xAxis = 45;
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
-  const [followJupiter, setFollowJupiter] = useState(false);
-
-  const toggleFollowJupiter = () => {
-    setFollowJupiter((prev) => !prev);
-  };
 
   const jupiterAnimations = useCallback(() => {
     if (jupiterRef.current) {
@@ -21,16 +22,36 @@ const Jupiter = React.memo(() => {
       jupiterRef.current.rotation.y += 0.005;
       // axis rotation
       jupiterRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.1) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.07) * xAxis;
       jupiterRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.1) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.07) * xAxis;
     }
   }, []);
 
   useFrame(({ camera }) => {
     jupiterAnimations();
     const jupiterPosition = jupiterRef.current?.position;
-    if (followJupiter && jupiterPosition) camera.lookAt(jupiterPosition);
+
+    // Apply smooth camera transition using TWEEN
+    if (isFollowed && jupiterPosition) {
+      const targetPosition = new THREE.Vector3(
+        jupiterPosition.x + 10,
+        jupiterPosition.y + 2,
+        jupiterPosition.z + 5
+      );
+
+      // Create a new TWEEN for camera position
+      new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000) // Move to the target position over 1 second
+        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
+        .onUpdate(() => camera.lookAt(jupiterPosition)) // Continuously update the camera's lookAt position
+        .start();
+    }
+  });
+
+  // Update TWEEN animations
+  useFrame(() => {
+    TWEEN.update();
   });
 
   useEffect(() => {
@@ -40,7 +61,7 @@ const Jupiter = React.memo(() => {
   return (
     <mesh
       ref={jupiterRef}
-      onDoubleClick={toggleFollowJupiter}
+      onDoubleClick={onToggleFollow}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
@@ -49,14 +70,14 @@ const Jupiter = React.memo(() => {
       <meshStandardMaterial
         map={jupiterTexture}
         emissive={
-          hovered || followJupiter
+          hovered || isFollowed
             ? new THREE.Color(0xffffff)
             : new THREE.Color(0x000000)
         }
-        emissiveIntensity={hovered || followJupiter ? 0.15 : 0}
+        emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
       />
     </mesh>
   );
-});
+};
 
 export default Jupiter;

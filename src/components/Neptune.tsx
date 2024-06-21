@@ -2,33 +2,54 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 
-const Neptune = React.memo(() => {
+interface PlanetProps {
+  isFollowed: boolean;
+  onToggleFollow: () => void;
+}
+
+const Neptune: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const neptuneRef = useRef<THREE.Mesh>(null);
   const [neptuneTexture] = useTexture(["/assets/neptune-texture-map.jpg"]);
-  const xAxis = 30.1;
+  const xAxis = 100;
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
-  const [followNeptune, setFollowNeptune] = useState(false);
-
-  const toggleFollowNeptune = () => {
-    setFollowNeptune((prev) => !prev);
-  };
 
   const neptuneAnimations = useCallback(() => {
     if (neptuneRef.current) {
       neptuneRef.current.rotation.y += 0.005;
       neptuneRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.03) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.05) * xAxis;
       neptuneRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.03) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.05) * xAxis;
     }
   }, []);
 
   useFrame(({ camera }) => {
     neptuneAnimations();
     const neptunePosition = neptuneRef.current?.position;
-    if (followNeptune && neptunePosition) camera.lookAt(neptunePosition);
+
+    // Apply smooth camera transition using TWEEN
+    if (isFollowed && neptunePosition) {
+      const targetPosition = new THREE.Vector3(
+        neptunePosition.x + 10,
+        neptunePosition.y + 2,
+        neptunePosition.z + 5
+      );
+
+      // Create a new TWEEN for camera position
+      new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000) // Move to the target position over 1 second
+        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
+        .onUpdate(() => camera.lookAt(neptunePosition)) // Continuously update the camera's lookAt position
+        .start();
+    }
+  });
+
+  // Update TWEEN animations
+  useFrame(() => {
+    TWEEN.update();
   });
 
   useEffect(() => {
@@ -38,7 +59,7 @@ const Neptune = React.memo(() => {
   return (
     <mesh
       ref={neptuneRef}
-      onDoubleClick={toggleFollowNeptune}
+      onDoubleClick={onToggleFollow}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
@@ -47,14 +68,14 @@ const Neptune = React.memo(() => {
       <meshStandardMaterial
         map={neptuneTexture}
         emissive={
-          hovered || followNeptune
+          hovered || isFollowed
             ? new THREE.Color(0xffffff)
             : new THREE.Color(0x000000)
         }
-        emissiveIntensity={hovered || followNeptune ? 0.15 : 0}
+        emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
       />
     </mesh>
   );
-});
+};
 
 export default Neptune;
