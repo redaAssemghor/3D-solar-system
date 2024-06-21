@@ -6,3 +6,78 @@
   margin: 0;
   padding: 0;
 }
+
+.custom-button {
+  background: linear-gradient(135deg, #006d77 0%, #83c5be 100%);
+  border: 2px solid #fff;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  position: relative;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-button:hover {
+  background: linear-gradient(135deg, #83c5be 0%, #006d77 100%);
+}
+
+.button-text {
+  font-size: 2rem;
+}
+
+.button-subtext {
+  font-size: 1rem;
+  margin-top: -10px;
+  text-transform: uppercase;
+}
+
+.bg-gray-900 {
+  background-color: #1f2937; /* Dark gray */
+}
+
+.text-blue-300 {
+  color: #7dd3fc; /* Light blue */
+}
+
+.text-blue-400 {
+  color: #38bdf8; /* Slightly darker blue */
+}
+
+.hover\:text-blue-500:hover {
+  color: #0ea5e9; /* Hover blue */
+}
+
+.p-2 {
+  padding: 0.5rem; /* Padding */
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.text-sm {
+  font-size: 0.875rem; /* Small text */
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 0.5rem;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 1rem;
+}
+
+.hover\:underline:hover {
+  text-decoration: underline;
+}
