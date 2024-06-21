@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Sun from "./Sun";
 import Mercury from "./Mercury";
 import Venus from "./Venus";

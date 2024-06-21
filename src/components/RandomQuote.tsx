@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const RandomQuote = () => {
@@ -10,7 +10,7 @@ const RandomQuote = () => {
   const fetchQuote = async () => {
     try {
       setLoading(true);
-      setFade(true); // Trigger fade-out effect
+      setFade(true);
       const response = await axios.get("https://api.quotable.io/random");
       setTimeout(() => {
         setQuote(response.data.content);
