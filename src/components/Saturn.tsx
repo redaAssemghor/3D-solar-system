@@ -10,13 +10,13 @@ const Saturn = React.memo(() => {
     "/assets/saturn-texture-map.jpg",
     "/assets/saturn-texture-map.jpg",
   ]);
-  const orbitRadius = 45; // Larger orbit radius for Saturn
+  const orbitRadius = 50; // Larger orbit radius for Saturn
   const clockRef = useRef(new THREE.Clock());
 
   const saturnAnimations = useCallback(() => {
     if (saturnRef.current) {
       // orbit rotation
-      saturnRef.current.rotation.x += 0.005;
+      saturnRef.current.rotation.y += 0.005;
       // axis rotation
       saturnRef.current.position.x =
         Math.sin(clockRef.current.getElapsedTime() * 0.5) * orbitRadius;
@@ -25,7 +25,7 @@ const Saturn = React.memo(() => {
     }
     if (ringsRef.current) {
       // orbit rotation
-      ringsRef.current.rotation.x += 0.005;
+      ringsRef.current.rotation.y += 0.005;
       // axis rotation
       ringsRef.current.position.x =
         Math.sin(clockRef.current.getElapsedTime() * 0.5) * orbitRadius;
