@@ -21,7 +21,7 @@ const Header = () => {
   return (
     <header className="bg-black text-blue-400 p-4 flex justify-between items-center shadow-lg relative">
       <button onClick={handleClick} className="focus:outline-none">
-        <div className="text-2xl font-bold tracking-wider neon-effect">
+        <div className="text-2xl font-bold tracking-wider hover:bg-[#0ff] p-1 hover:text-black neon-effect">
           Solar System
         </div>
       </button>

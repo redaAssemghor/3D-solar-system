@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { SparklesCore } from "./ui/sparkles";
 
 const RandomQuote = () => {
   const [quote, setQuote] = useState("");
@@ -29,8 +30,17 @@ const RandomQuote = () => {
   }, []);
 
   return (
-    <section className="bg-black text-blue-300 w-full h-[500px] flex flex-col items-center justify-center transition-all duration-500 ease-in-out">
-      <div className="border-2 border-blue-400 rounded-lg p-24 gap-3 flex flex-col justify-center items-center">
+    <section className="bg-black text-blue-300 w-full h-[500px] flex flex-col items-center justify-center transition-all duration-500 ease-in-out relative">
+      <SparklesCore
+        id="tsparticlesfullpage"
+        background="transparent"
+        minSize={0.6}
+        maxSize={1.4}
+        particleDensity={100}
+        className="w-full h-full"
+        particleColor="#FFFFFF"
+      />
+      <div className="border-2 border-blue-400 rounded-lg p-24 gap-3 flex flex-col justify-center items-center absolute">
         <div
           className={`text-center transition-opacity duration-500 ${
             fade ? "opacity-0" : "opacity-100"
