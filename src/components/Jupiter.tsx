@@ -11,6 +11,7 @@ interface PlanetProps {
 
 const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const jupiterRef = useRef<THREE.Mesh>(null);
+  const textRef = useRef<THREE.Object3D>(null);
   const [jupiterTexture] = useTexture(["/assets/jupiter-texture-map.jpg"]);
   const xAxis = 45;
   const clockRef = useRef(new THREE.Clock());
@@ -31,6 +32,15 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   useFrame(({ camera }) => {
     jupiterAnimations();
     const jupiterPosition = jupiterRef.current?.position;
+
+    // Update the position of the text to always be on top of the planet
+    if (textRef.current && jupiterPosition) {
+      textRef.current.position.set(
+        jupiterPosition.x,
+        jupiterPosition.y + 5, // Adjust the height as needed
+        jupiterPosition.z
+      );
+    }
 
     // Apply smooth camera transition using TWEEN
     if (isFollowed && jupiterPosition) {
@@ -78,9 +88,9 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
           emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
         />
       </mesh>
-      {hovered && (
+      {isFollowed && (
         <Text
-          position={[0, 4, 0]}
+          ref={textRef}
           fontSize={2}
           color="white"
           anchorX="center"
