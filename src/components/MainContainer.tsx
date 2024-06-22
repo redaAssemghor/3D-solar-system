@@ -9,7 +9,15 @@ import Uranus from "./Uranus";
 import Neptune from "./Neptune";
 import AnimatedStars from "./AnimatedStars";
 
-const MainContainer = ({ handleToggleFollow, followedPlanet }) => {
+interface MainContainerProps {
+  handleToggleFollow: (planetName: string) => void;
+  followedPlanet: string | null;
+}
+
+const MainContainer: React.FC<MainContainerProps> = ({
+  handleToggleFollow,
+  followedPlanet,
+}) => {
   return (
     <>
       <AnimatedStars />
