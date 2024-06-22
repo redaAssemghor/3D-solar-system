@@ -23,7 +23,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen, onClose }) => {
       aria-hidden={!isOpen}
       role="dialog"
     >
-      <div className="grid grid-cols-3 sm:grid-cols-2 gap-8 max-w-screen-lg w-full">
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-8 max-w-screen-lg w-full">
         <button className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none">
           <IoPlanetSharp className="text-6xl text-blue-400 mb-4" />
           <span className="text-xl text-white">Planets</span>

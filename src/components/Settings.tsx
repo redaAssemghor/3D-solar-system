@@ -29,7 +29,7 @@ const Settings: React.FC<SettingsProps> = ({
   return (
     <div className="absolute right-10 top-0 flex flex-col items-end">
       <button
-        className="z-10 text-white text-6xl p-3 hover:text-blue-500 neon-effect"
+        className="z-10 text-white text-6xl p-3 hover:text-blue-500"
         onClick={handleClick}
       >
         <GoGear />
@@ -39,7 +39,7 @@ const Settings: React.FC<SettingsProps> = ({
           clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="w-48 bg-gray-900 flex flex-col">
+        <div className="w-48 bg-gray-900 flex flex-col rounded-lg">
           {planets.map((planet) => (
             <button
               key={planet.name}
