@@ -16,6 +16,38 @@ const Neptune: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
 
+  const createOrbitPath = () => {
+    const points = [];
+    const radius = xAxis;
+    const segments = 64;
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * Math.PI * 2;
+      points.push(
+        new THREE.Vector3(Math.cos(theta) * radius, 0, Math.sin(theta) * radius)
+      );
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    return new THREE.Line(geometry, material);
+  };
+
+  useEffect(() => {
+    const orbitPath = createOrbitPath();
+    const neptuneParent = neptuneRef.current?.parent;
+
+    if (neptuneParent) {
+      neptuneParent.add(orbitPath);
+    }
+
+    return () => {
+      if (neptuneParent) {
+        neptuneParent.remove(orbitPath);
+      }
+    };
+  }, []);
+
   const neptuneAnimations = useCallback(() => {
     if (neptuneRef.current) {
       neptuneRef.current.rotation.y += 0.005;

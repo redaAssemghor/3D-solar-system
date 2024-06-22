@@ -16,6 +16,38 @@ const Venus: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
 
+  const createOrbitPath = () => {
+    const points = [];
+    const radius = xAxis;
+    const segments = 64;
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * Math.PI * 2;
+      points.push(
+        new THREE.Vector3(Math.cos(theta) * radius, 0, Math.sin(theta) * radius)
+      );
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    return new THREE.Line(geometry, material);
+  };
+
+  useEffect(() => {
+    const orbitPath = createOrbitPath();
+    const venusParent = venusRef.current?.parent;
+
+    if (venusParent) {
+      venusParent.add(orbitPath);
+    }
+
+    return () => {
+      if (venusParent) {
+        venusParent.remove(orbitPath);
+      }
+    };
+  }, []);
+
   const venusAnimations = useCallback(() => {
     if (venusRef.current) {
       venusRef.current.rotation.y += 0.005;
@@ -57,24 +89,26 @@ const Venus: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   }, [hovered]);
 
   return (
-    <mesh
-      ref={venusRef}
-      onDoubleClick={onToggleFollow}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-      position={[0, 0, 0]}
-    >
-      <sphereGeometry args={[0.95, 32, 32]} />
-      <meshStandardMaterial
-        map={venusTexture}
-        emissive={
-          hovered || isFollowed
-            ? new THREE.Color(0xffffff)
-            : new THREE.Color(0x000000)
-        }
-        emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
-      />
-    </mesh>
+    <>
+      <mesh
+        ref={venusRef}
+        onDoubleClick={onToggleFollow}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        position={[0, 0, 0]}
+      >
+        <sphereGeometry args={[0.95, 32, 32]} />
+        <meshStandardMaterial
+          map={venusTexture}
+          emissive={
+            hovered || isFollowed
+              ? new THREE.Color(0xffffff)
+              : new THREE.Color(0x000000)
+          }
+          emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
+        />
+      </mesh>
+    </>
   );
 };
 

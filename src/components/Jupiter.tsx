@@ -1,4 +1,4 @@
-import { Text, useTexture } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -17,11 +17,41 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
 
+  const createOrbitPath = () => {
+    const points = [];
+    const radius = xAxis;
+    const segments = 64;
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * Math.PI * 2;
+      points.push(
+        new THREE.Vector3(Math.cos(theta) * radius, 0, Math.sin(theta) * radius)
+      );
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    return new THREE.Line(geometry, material);
+  };
+
+  useEffect(() => {
+    const orbitPath = createOrbitPath();
+    const jupiterParent = jupiterRef.current?.parent;
+
+    if (jupiterParent) {
+      jupiterParent.add(orbitPath);
+    }
+
+    return () => {
+      if (jupiterParent) {
+        jupiterParent.remove(orbitPath);
+      }
+    };
+  }, []);
+
   const jupiterAnimations = useCallback(() => {
     if (jupiterRef.current) {
-      // orbit rotation
       jupiterRef.current.rotation.y += 0.005;
-      // axis rotation
       jupiterRef.current.position.x =
         Math.sin(clockRef.current.getElapsedTime() * 0.07) * xAxis;
       jupiterRef.current.position.z =
@@ -33,33 +63,28 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
     jupiterAnimations();
     const jupiterPosition = jupiterRef.current?.position;
 
-    // Update the position of the text to always be on top of the planet
     if (textRef.current && jupiterPosition) {
       textRef.current.position.set(
         jupiterPosition.x,
-        jupiterPosition.y + 5, // Adjust the height as needed
+        jupiterPosition.y + 5,
         jupiterPosition.z
       );
     }
 
-    // Apply smooth camera transition using TWEEN
     if (isFollowed && jupiterPosition) {
       const targetPosition = new THREE.Vector3(
         jupiterPosition.x + 10,
         jupiterPosition.y + 2,
         jupiterPosition.z + 5
       );
-
-      // Create a new TWEEN for camera position
       new TWEEN.Tween(camera.position)
-        .to(targetPosition, 1000) // Move to the target position over 1 second
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
-        .onUpdate(() => camera.lookAt(jupiterPosition)) // Continuously update the camera's lookAt position
+        .to(targetPosition, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onUpdate(() => camera.lookAt(jupiterPosition))
         .start();
     }
   });
 
-  // Update TWEEN animations
   useFrame(() => {
     TWEEN.update();
   });
@@ -88,17 +113,6 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
           emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
         />
       </mesh>
-      {isFollowed && (
-        <Text
-          ref={textRef}
-          fontSize={2}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Jupiter
-        </Text>
-      )}
     </>
   );
 };

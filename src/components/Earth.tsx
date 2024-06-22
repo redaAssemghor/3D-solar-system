@@ -30,6 +30,38 @@ const Earth: React.FC<EarthProps> = ({
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
 
+  const createOrbitPath = () => {
+    const points = [];
+    const radius = xAxis;
+    const segments = 64;
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * Math.PI * 2;
+      points.push(
+        new THREE.Vector3(Math.cos(theta) * radius, 0, Math.sin(theta) * radius)
+      );
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    return new THREE.Line(geometry, material);
+  };
+
+  useEffect(() => {
+    const orbitPath = createOrbitPath();
+    const earthParent = groupRef.current?.parent;
+
+    if (earthParent) {
+      earthParent.add(orbitPath);
+    }
+
+    return () => {
+      if (earthParent) {
+        earthParent.remove(orbitPath);
+      }
+    };
+  }, []);
+
   const orbitAnimation = useCallback(() => {
     if (groupRef.current) {
       groupRef.current.position.x =
