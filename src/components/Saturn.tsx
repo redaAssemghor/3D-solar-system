@@ -124,8 +124,7 @@ const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
         <meshBasicMaterial
           map={ringsTexture}
           side={THREE.DoubleSide}
-          transparent={true}
-          opacity={0.5}
+          opacity={20}
         />
       </mesh>
     </>

@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import MainContainer from "../components/MainContainer";
 import LoadingComponent from "../components/LoadingScreen";
+import Settings from "../components/Settings";
 
 const SimulationPage = () => {
   const [loading, setLoading] = useState(true);
+  const [followedPlanet, setFollowedPlanet] = useState<string | null>(null);
+
+  const handleToggleFollow = useCallback((planetName: string) => {
+    setFollowedPlanet((prev) => (prev === planetName ? null : planetName));
+  }, []);
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="h-screen w-screen overflow-hidden relative">
       {loading && <LoadingComponent />}
       <Canvas
         shadows
@@ -17,8 +23,17 @@ const SimulationPage = () => {
       >
         <color attach="background" args={["black"]} />
         <OrbitControls />
-        <MainContainer />
+        <MainContainer
+          followedPlanet={followedPlanet}
+          handleToggleFollow={handleToggleFollow}
+        />
       </Canvas>
+      {!loading && (
+        <Settings
+          followedPlanet={followedPlanet}
+          onToggleFollow={handleToggleFollow}
+        />
+      )}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Footer from "./components/Footer";
 import RandomQuote from "./components/RandomQuote";
+import Newsletter from "./pages/NewsLetter";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           }
         />
         <Route path="/simulation" element={<SimulationPage />} />
+        <Route path="/newsletter" element={<Newsletter />} />
       </Routes>
       <Footer />
     </div>

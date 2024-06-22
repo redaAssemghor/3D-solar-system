@@ -21,7 +21,7 @@ const LoadingComponent = () => {
   return (
     <>
       <div
-        className="flex items-center justify-center h-screen bg-cover bg-center overflow-hidden"
+        className="flex items-center justify-center h-screen bg-cover bg-center overflow-hidden z-10"
         style={{ backgroundImage: `url('/assets/loading-bg.jpg')` }}
       >
         <Meteors number={20} />

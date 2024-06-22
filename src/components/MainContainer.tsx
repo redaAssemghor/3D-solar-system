@@ -1,4 +1,3 @@
-import { useState, useCallback } from "react";
 import Sun from "./Sun";
 import Mercury from "./Mercury";
 import Venus from "./Venus";
@@ -10,13 +9,7 @@ import Uranus from "./Uranus";
 import Neptune from "./Neptune";
 import AnimatedStars from "./AnimatedStars";
 
-const MainContainer = () => {
-  const [followedPlanet, setFollowedPlanet] = useState<string | null>(null);
-
-  const handleToggleFollow = useCallback((planetName: string) => {
-    setFollowedPlanet((prev) => (prev === planetName ? null : planetName));
-  }, []);
-
+const MainContainer = ({ handleToggleFollow, followedPlanet }) => {
   return (
     <>
       <AnimatedStars />

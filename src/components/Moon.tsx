@@ -1,6 +1,6 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 
 const Moon = React.memo(() => {
@@ -8,6 +8,37 @@ const Moon = React.memo(() => {
   const [moonTexture] = useTexture(["/assets/moon_map.jpg"]);
   const xAxis = 4;
   const clockRef = useRef(new THREE.Clock());
+  const createOrbitPath = () => {
+    const points = [];
+    const radius = xAxis;
+    const segments = 64;
+
+    for (let i = 0; i <= segments; i++) {
+      const theta = (i / segments) * Math.PI * 2;
+      points.push(
+        new THREE.Vector3(Math.cos(theta) * radius, 0, Math.sin(theta) * radius)
+      );
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    return new THREE.Line(geometry, material);
+  };
+
+  useEffect(() => {
+    const orbitPath = createOrbitPath();
+    const moonParent = moonRef.current?.parent;
+
+    if (moonParent) {
+      moonParent.add(orbitPath);
+    }
+
+    return () => {
+      if (moonParent) {
+        moonParent.remove(orbitPath);
+      }
+    };
+  }, []);
 
   const moonAnimations = useCallback(() => {
     if (moonRef.current) {
