@@ -97,8 +97,8 @@
   height: 100%;
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.2),
-    0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.2),
-    0 0 40px #0ff, 0 0 70px #0ff, 0 0 80px #0ff, 0 0 100px #0ff;
+    0 0 10px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.2),
+    0 0 20px #0ff, 0 0 7px #0ff, 0 0 8px #0ff, 0 0 10px #0ff;
   opacity: 0;
   transition: opacity 0.5s;
 }
@@ -107,3 +107,5 @@
 .neon-effect:hover:after {
   opacity: 1;
 }
+
+/* svg background */

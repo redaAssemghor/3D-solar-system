@@ -9,13 +9,17 @@ import SpaceStation from "./SpaceStation";
 interface EarthProps {
   displacementScale: number;
   isFollowed: boolean;
+  issFollowed: boolean;
   onToggleFollow: () => void;
+  onToggleFollowISS: () => void;
 }
 
 const Earth: React.FC<EarthProps> = ({
   displacementScale,
   isFollowed,
+  issFollowed,
   onToggleFollow,
+  onToggleFollowISS,
 }) => {
   const earthRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
@@ -80,7 +84,6 @@ const Earth: React.FC<EarthProps> = ({
     rotationAnimation();
     const earthPosition = groupRef.current?.position;
 
-    // Apply smooth camera transition using TWEEN
     if (isFollowed && earthPosition) {
       const targetPosition = new THREE.Vector3(
         earthPosition.x + 10,
@@ -88,16 +91,14 @@ const Earth: React.FC<EarthProps> = ({
         earthPosition.z + 5
       );
 
-      // Create a new TWEEN for camera position
       new TWEEN.Tween(camera.position)
-        .to(targetPosition, 1000) // Move to the target position over 1 second
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
-        .onUpdate(() => camera.lookAt(earthPosition)) // Continuously update the camera's lookAt position
+        .to(targetPosition, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onUpdate(() => camera.lookAt(earthPosition))
         .start();
     }
   });
 
-  // Update TWEEN animations
   useFrame(() => {
     TWEEN.update();
   });
@@ -130,7 +131,7 @@ const Earth: React.FC<EarthProps> = ({
           emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
         />
       </mesh>
-      <SpaceStation />
+      <SpaceStation issFollowed={true} onToggleFollow={onToggleFollowISS} />
       <Moon />
     </group>
   );

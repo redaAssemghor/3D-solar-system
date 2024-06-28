@@ -11,6 +11,7 @@ const Settings: React.FC<SettingsProps> = ({
   onToggleFollow,
 }) => {
   const planets = [
+    { name: "ISS" },
     { name: "Mercury" },
     { name: "Venus" },
     { name: "Earth" },
@@ -29,7 +30,7 @@ const Settings: React.FC<SettingsProps> = ({
   return (
     <div className="absolute right-10 top-0 flex flex-col items-end">
       <button
-        className="z-10 text-white text-6xl p-3 hover:text-blue-500"
+        className="z-10 text-white text-6xl p-3 hover:text-[#0ff]"
         onClick={handleClick}
       >
         <GoGear />
@@ -44,7 +45,7 @@ const Settings: React.FC<SettingsProps> = ({
             <button
               key={planet.name}
               onClick={() => onToggleFollow(planet.name)}
-              className={` flex items-center justify-center p-6 text-lg font-bold rounded-lg transition-colors duration-300 ${
+              className={`flex items-center hover:text-[#0ff] justify-center p-6 text-lg font-bold rounded-lg transition-colors duration-300 ${
                 followedPlanet === planet.name ? "text-blue-500" : "text-white"
               } neon-effect`}
             >

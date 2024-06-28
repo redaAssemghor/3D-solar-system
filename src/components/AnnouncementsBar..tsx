@@ -14,13 +14,13 @@ const AnnouncementsBar = () => {
           </a>
         </span>
         <div className="flex space-x-2">
-          <a href="https://facebook.com" className="hover:text-blue-500">
+          <a href="https://facebook.com" className="hover:text-[#0ff]">
             <FaFacebookF />
           </a>
-          <a href="https://twitter.com" className="hover:text-blue-500">
+          <a href="https://twitter.com" className="hover:text-[#0ff]">
             <FaTwitter />
           </a>
-          <a href="https://instagram.com" className="hover:text-blue-500">
+          <a href="https://instagram.com" className="hover:text-[#0ff]">
             <FaInstagram />
           </a>
         </div>

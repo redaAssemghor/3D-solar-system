@@ -2,8 +2,9 @@ import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useRef } from "react";
 import * as THREE from "three";
+import * as TWEEN from "@tweenjs/tween.js";
 
-const SpaceStation = React.memo(() => {
+const SpaceStation = React.memo(({ issFollowed, onToggleFollow }) => {
   const { scene } = useGLTF("/assets/ISS/ISS_stationary.gltf");
   const stationRef = useRef<THREE.Mesh>(null);
   const clockRef = useRef(new THREE.Clock());
@@ -11,7 +12,6 @@ const SpaceStation = React.memo(() => {
 
   const issOrbit = useCallback(() => {
     if (stationRef.current) {
-      // axis rotation
       stationRef.current.position.x =
         Math.sin(clockRef.current.getElapsedTime() * 2) * xAxis;
       stationRef.current.position.z =
@@ -19,16 +19,31 @@ const SpaceStation = React.memo(() => {
     }
   }, []);
 
-  useFrame(issOrbit);
+  useFrame(({ camera }) => {
+    issOrbit();
+    const stationPosition = stationRef.current?.position;
+
+    if (issFollowed && stationPosition) {
+      const targetPosition = new THREE.Vector3(
+        stationPosition.x + 3,
+        stationPosition.y + 1,
+        stationPosition.z + 1
+      );
+      new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onUpdate(() => camera.lookAt(stationPosition))
+        .start();
+    }
+  });
+
+  useFrame(() => {
+    TWEEN.update();
+  });
 
   return (
-    <mesh>
-      <primitive
-        ref={stationRef}
-        object={scene}
-        position={[2, 0, 0]}
-        scale={0.005}
-      />
+    <mesh ref={stationRef} onDoubleClick={onToggleFollow}>
+      <primitive object={scene} position={[2, 0, 0]} scale={0.01} />
     </mesh>
   );
 });
