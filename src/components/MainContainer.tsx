@@ -35,6 +35,8 @@ const MainContainer: React.FC<MainContainerProps> = ({
         displacementScale={0.05}
         isFollowed={followedPlanet === "Earth"}
         onToggleFollow={() => handleToggleFollow("Earth")}
+        issIsFollowed={followedPlanet === "ISS"}
+        onToggleFollowISS={() => handleToggleFollow("ISS")}
       />
       <Mars
         isFollowed={followedPlanet === "Mars"}

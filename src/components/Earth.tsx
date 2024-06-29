@@ -9,7 +9,7 @@ import SpaceStation from "./SpaceStation";
 interface EarthProps {
   displacementScale: number;
   isFollowed: boolean;
-  issFollowed: boolean;
+  issIsFollowed: boolean;
   onToggleFollow: () => void;
   onToggleFollowISS: () => void;
 }
@@ -17,7 +17,7 @@ interface EarthProps {
 const Earth: React.FC<EarthProps> = ({
   displacementScale,
   isFollowed,
-  issFollowed,
+  issIsFollowed,
   onToggleFollow,
   onToggleFollowISS,
 }) => {
@@ -110,7 +110,7 @@ const Earth: React.FC<EarthProps> = ({
   return (
     <group
       ref={groupRef}
-      onDoubleClick={onToggleFollow}
+      onClick={onToggleFollow}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
@@ -131,7 +131,10 @@ const Earth: React.FC<EarthProps> = ({
           emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
         />
       </mesh>
-      <SpaceStation issFollowed={true} onToggleFollow={onToggleFollowISS} />
+      <SpaceStation
+        issIsFollowed={issIsFollowed}
+        onToggleFollow={onToggleFollowISS}
+      />
       <Moon />
     </group>
   );
