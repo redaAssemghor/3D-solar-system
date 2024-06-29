@@ -6,6 +6,7 @@ import MainPage from "./pages/MainPage";
 import Footer from "./components/Footer";
 import RandomQuote from "./components/RandomQuote";
 import Newsletter from "./pages/NewsLetter";
+import IssPage from "./pages/IssPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         />
         <Route path="/simulation" element={<SimulationPage />} />
         <Route path="/newsletter" element={<Newsletter />} />
+        <Route path="/iss" element={<IssPage />} />
       </Routes>
       <Footer />
     </div>

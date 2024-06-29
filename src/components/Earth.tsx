@@ -132,6 +132,7 @@ const Earth: React.FC<EarthProps> = ({
         />
       </mesh>
       <SpaceStation
+        scale={0.05}
         issIsFollowed={issIsFollowed}
         onToggleFollow={onToggleFollowISS}
       />

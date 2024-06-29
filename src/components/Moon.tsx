@@ -46,9 +46,9 @@ const Moon = React.memo(() => {
       moonRef.current.rotation.x += 0.005;
       // axis rotation
       moonRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 2) * xAxis;
+        Math.sin(clockRef.current.getElapsedTime() * 0.5) * xAxis;
       moonRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 2) * xAxis;
+        Math.cos(clockRef.current.getElapsedTime() * 0.5) * xAxis;
     }
   }, []);
 
