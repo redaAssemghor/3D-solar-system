@@ -21,9 +21,11 @@ const Header = () => {
   return (
     <header className="bg-black text-blue-400 flex justify-between items-center shadow-lg relative">
       <button onClick={handleClick} className="focus:outline-none">
-        <div className="flex items-center gap-2 tracking-wider hover:text-[#0ff]">
+        <div className="flex items-center tracking-wider hover:text-[#0ff]">
           <img src="favi.png" alt="logo" className="max-w-16" />
-          <span className="">Solar System</span>
+          <span className="font-black transition duration-1000 ease-in-out">
+            Solar System
+          </span>
         </div>
       </button>
       <div className="flex space-x-4 mr-4">

@@ -12,10 +12,12 @@ const RandomQuote = () => {
     try {
       setLoading(true);
       setFade(true);
-      const response = await axios.get("https://api.quotable.io/random");
+      const response = await axios.get("https://type.fit/api/quotes");
+      const quotes = response.data;
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
       setTimeout(() => {
-        setQuote(response.data.content);
-        setAuthor(response.data.author);
+        setQuote(randomQuote.text);
+        setAuthor(randomQuote.author || "Unknown");
         setFade(false); // Trigger fade-in effect
         setLoading(false);
       }, 500); // Wait for the fade-out effect to complete
@@ -30,19 +32,19 @@ const RandomQuote = () => {
   }, []);
 
   return (
-    <section className="bg-black text-blue-300 w-full h-[500px] flex flex-col items-center justify-center transition-all duration-500 ease-in-out relative">
+    <section className="bg-black w-full flex flex-col items-center justify-center transition-all duration-500 ease-in-out relative">
       <SparklesCore
         id="tsparticlesfullpage"
         background="transparent"
         minSize={0.6}
         maxSize={1.4}
         particleDensity={100}
-        className="w-full h-full"
+        className="w-screen h-screen"
         particleColor="#FFFFFF"
       />
-      <div className="border-2 border-blue-400 rounded-lg p-24 gap-3 flex flex-col justify-center items-center absolute">
+      <div className="text-white flex flex-col justify-center items-center absolute">
         <div
-          className={`text-center transition-opacity duration-500 ${
+          className={`text-center transition-opacity duration-500 pb-20 ${
             fade ? "opacity-0" : "opacity-100"
           }`}
         >
@@ -50,7 +52,7 @@ const RandomQuote = () => {
             <p className="text-lg italic">Loading...</p>
           ) : (
             <>
-              <p className="text-lg italic">{quote}</p>
+              <p className="text-lg lg:text-4xl font-black italic">"{quote}"</p>
               <p className="text-sm mt-2">- {author}</p>
             </>
           )}

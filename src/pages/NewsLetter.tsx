@@ -13,9 +13,9 @@ const Newsletter: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-500 p-4">
-      <Meteors />
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-500 p-4">
       <h1 className="text-4xl font-bold mb-6">Subscribe to our Newsletter</h1>
+      <Meteors className="absolute" />
       {submitted ? (
         <div className="text-xl text-blue-500 font-bold">
           Thank you for subscribing!

@@ -18,7 +18,7 @@ const SimulationPage = () => {
       {loading && <LoadingComponent />}
       <Canvas
         camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 10, 19.5] }}
-        onCreated={() => setLoading(true)}
+        onCreated={() => setLoading(false)}
       >
         <color attach="background" args={["black"]} />
         <OrbitControls />

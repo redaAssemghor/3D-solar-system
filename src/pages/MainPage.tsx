@@ -11,7 +11,7 @@ const MainPage = () => {
     <main className="relative w-full h-screen">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
-        src="/assets/background-video.mp4"
+        src="/assets/video.mp4"
         autoPlay
         loop
         muted
