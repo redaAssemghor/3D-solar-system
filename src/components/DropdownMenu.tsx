@@ -1,12 +1,4 @@
-import {
-  FaRocket,
-  FaSpaceShuttle,
-  FaSatellite,
-  FaStar,
-  FaMeteor,
-  FaGlobe,
-  FaMoon,
-} from "react-icons/fa";
+import { FaRocket, FaStar, FaMeteor, FaGlobe, FaMoon } from "react-icons/fa";
 import { IoPlanetSharp } from "react-icons/io5";
 import { LuMailPlus } from "react-icons/lu";
 import { MdLiveTv } from "react-icons/md";

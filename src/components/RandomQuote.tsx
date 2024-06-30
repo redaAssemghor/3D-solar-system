@@ -13,15 +13,6 @@ const RandomQuote = () => {
   const [fade, setFade] = useState(false);
   const [liked, setLiked] = useState(false);
 
-  useGSAP(() => {
-    const fadeGsap = gsap.from(".quote", {
-      opacity: 0,
-      duration: 10,
-      y: 40,
-      backgroundColor: "red",
-    });
-  });
-
   const fetchQuote = async () => {
     try {
       setLoading(true);
@@ -71,7 +62,7 @@ const RandomQuote = () => {
               </div>
             ) : (
               <>
-                <p className="text-lg lg:text-4xl font-black italic quote ">
+                <p className="text-lg lg:text-4xl font-black italic">
                   "{quote}"
                 </p>
                 <p className="text-sm m-4 quote flex-">{author}</p>
