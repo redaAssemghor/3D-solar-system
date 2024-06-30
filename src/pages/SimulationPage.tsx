@@ -17,7 +17,6 @@ const SimulationPage = () => {
     <div className="h-screen w-screen overflow-hidden relative">
       {loading && <LoadingComponent />}
       <Canvas
-        shadows
         camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 10, 19.5] }}
         onCreated={() => setLoading(false)}
       >

@@ -103,7 +103,7 @@ const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
     <>
       <mesh
         ref={saturnRef}
-        onDoubleClick={onToggleFollow}
+        onClick={onToggleFollow}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         position={[0, 0, 0]}
@@ -120,7 +120,7 @@ const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
         />
       </mesh>
       <mesh ref={ringsRef} position={[0, 0, 0]}>
-        <ringGeometry args={[2.6, 4, 64]} />
+        <ringGeometry args={[6, 4, 64]} />
         <meshBasicMaterial
           map={ringsTexture}
           side={THREE.DoubleSide}

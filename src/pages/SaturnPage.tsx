@@ -1,11 +1,11 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import SpaceStation from "../components/SpaceStation";
 import AnimatedStars from "../components/AnimatedStars";
 import { useState } from "react";
 import LoadingComponent from "../components/LoadingScreen";
+import SaturnModel from "../components/SaturnModel";
 
-const IssPage = () => {
+const SaturnPage = () => {
   const [loading, setLoading] = useState(true);
 
   return (
@@ -16,17 +16,14 @@ const IssPage = () => {
         onCreated={() => setLoading(false)}
       >
         <color attach="background" args={["black"]} />
+        <ambientLight intensity={2} />
         <OrbitControls />
         <AnimatedStars />
         <ambientLight intensity={2} />
-        <SpaceStation
-          issIsFollowed={true}
-          onToggleFollow={() => {}}
-          scale={0.3}
-        />
+        <SaturnModel />
       </Canvas>
     </div>
   );
 };
 
-export default IssPage;
+export default SaturnPage;
