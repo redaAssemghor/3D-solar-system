@@ -8,7 +8,7 @@
 }
 
 .custom-button {
-  background: linear-gradient(135deg, #006d77 0%, #83c5be 100%);
+  background: linear-gradient(135deg, #3e4e50 0%, #83c5be 100%);
   border: 2px solid #fff;
   border-radius: 10px;
   color: #fff;
@@ -24,60 +24,18 @@
   background: linear-gradient(135deg, #83c5be 0%, #006d77 100%);
 }
 
-.button-text {
-  font-size: 2rem;
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .custom-button {
+    font-size: 1.25rem;
+    padding: 8px 16px;
+  }
 }
 
-.button-subtext {
-  font-size: 1rem;
-  margin-top: -10px;
-  text-transform: uppercase;
-}
-
-.bg-gray-900 {
-  background-color: #1f2937; /* Dark gray */
-}
-
-.text-blue-300 {
-  color: #7dd3fc; /* Light blue */
-}
-
-.text-blue-400 {
-  color: #38bdf8; /* Slightly darker blue */
-}
-
-.hover\:text-blue-500:hover {
-  color: #0ea5e9; /* Hover blue */
-}
-
-.p-2 {
-  padding: 0.5rem; /* Padding */
-}
-
-.flex {
-  display: flex;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.text-sm {
-  font-size: 0.875rem; /* Small text */
-}
-
-.space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  margin-left: 0.5rem;
-}
-
-.space-x-4 > :not([hidden]) ~ :not([hidden]) {
-  margin-left: 1rem;
-}
-
-.hover\:underline:hover {
-  text-decoration: underline;
+/* Media query for extra small screens */
+@media (max-width: 480px) {
+  .custom-button {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
 }

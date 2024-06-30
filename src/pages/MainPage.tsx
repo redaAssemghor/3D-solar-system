@@ -17,8 +17,8 @@ const MainPage = () => {
         muted
       />
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
-        <h1 className="text-5xl font-bold mb-2">SOLAR SYSTEM</h1>
-        <p className="text-xl mb-8">
+        <h1 className="lg:text-5xl text-3xl font-bold mb-2">SOLAR SYSTEM</h1>
+        <p className="lg:text-xl mb-8">
           FREE ONLINE MODEL OF SOLAR SYSTEM AND NIGHT SKY
         </p>
         <button onClick={handleClick} className="custom-button">
