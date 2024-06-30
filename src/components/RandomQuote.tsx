@@ -47,7 +47,7 @@ const RandomQuote = () => {
   }, []);
 
   return (
-    <section className=" bg-black w-full flex flex-col items-center justify-start transition-all duration-500 ease-in-out relative">
+    <section className=" bg-black w-full flex flex-col items-center transition-all duration-500 ease-in-out relative">
       <SparklesCore
         id="tsparticlesfullpage"
         background="transparent"
@@ -58,7 +58,7 @@ const RandomQuote = () => {
         particleColor="#FFFFFF"
       />
       <Slider />
-      <div className="text-white flex flex-col absolute m-2">
+      <div className="text-white flex flex-col absolute m-2 py-[200px] md:py-8">
         <div className="relative md:w-[800px] w-screen h-[200px] flex">
           <div
             className={`transition-opacity duration-1000 lg:m-2 m-10 flex flex-col justify-center items-center ${
@@ -66,7 +66,7 @@ const RandomQuote = () => {
             }`}
           >
             {loading ? (
-              <div className="lg:w-[800px] w-screen flex items-center justify-center">
+              <div className="lg:w-[800px] lg:py-[200px] w-screen flex items-center justify-center">
                 <span className="loading loading-ring loading-lg"></span>
               </div>
             ) : (
