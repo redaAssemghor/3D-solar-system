@@ -26,7 +26,7 @@ function App() {
         />
         <Route path="/simulation" element={<SimulationPage />} />
         <Route path="/newsletter" element={<Newsletter />} />
-        <Route path="/iss" element={<IssPage />} />
+        <Route path="/iss-info" element={<IssPage />} />
         <Route path="/saturn-info" element={<VenusPage />} />
       </Routes>
       <Footer />

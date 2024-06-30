@@ -100,50 +100,51 @@ const Settings: React.FC<SettingsProps> = ({
           clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="w-64 bg-gray-900 flex flex-col rounded-lg p-2">
+        <div className="w-64 bg-gray-900 flex flex-col rounded-lg">
           <p className="text-blue-500 text-sm p-2">
             Switch between different camera perspectives for a new view.
           </p>
 
           {planets.map((planet) => (
-            <div key={planet.name} className="flex flex-col mb-2">
-              <div className="flex justify-between items-center">
-                <button
-                  onClick={() => onToggleFollow(planet.name)}
-                  className={`p-2 hover:text-[#0ff] text-lg font-bold rounded-lg transition-colors duration-500 ${
-                    followedPlanet === planet.name
-                      ? "text-blue-500"
-                      : "text-white"
-                  }`}
-                >
-                  {planet.name}
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleExpand(planet.name);
-                  }}
-                  className="ml-2 text-white hover:text-[#0ff] transition-colors duration-300"
-                >
-                  {expandedPlanet === planet.name ? (
-                    <FaChevronUp />
-                  ) : (
-                    <FaChevronDown />
-                  )}
-                </button>
-              </div>
+            <div key={planet.name}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleExpand(planet.name);
+                }}
+                className="flex p-2 justify-between w-full text-white neon-effect transition-colors duration-1000"
+              >
+                {planet.name}
+                {expandedPlanet === planet.name ? (
+                  <FaChevronUp />
+                ) : (
+                  <FaChevronDown />
+                )}
+              </button>
+
               <div
-                className={`transition-all duration-300 overflow-hidden ${
+                className={`transition-all duration-1000 overflow-hidden p-2 ${
                   expandedPlanet === planet.name ? "max-h-40" : "max-h-0"
                 }`}
               >
-                <div className="p-4 text-sm text-[#0ff] bg-gray-800 rounded-lg mt-2">
+                <div className="text-sm text-[#0ff] bg-gray-800 rounded-lg mt-2">
                   <p className="mb-2">
                     {planetDescriptions[planet.name].description}
                   </p>
+
+                  <button
+                    onClick={() => onToggleFollow(planet.name)}
+                    className={`hover:text-[#0ff] font-bold rounded-lg transition-colors duration-1000 ${
+                      followedPlanet === planet.name
+                        ? "text-blue-500"
+                        : "text-white"
+                    }`}
+                  >
+                    Toggle Camera Focus
+                  </button>
                   <a
                     href={planetDescriptions[planet.name].link}
-                    className="text-blue-400 hover:text-blue-200"
+                    className="text-blue-400 block hover:text-blue-200"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

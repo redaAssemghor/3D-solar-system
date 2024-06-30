@@ -1,4 +1,4 @@
-import { useTexture } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -11,11 +11,7 @@ interface PlanetProps {
 
 const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const saturnRef = useRef<THREE.Mesh>(null);
-  const ringsRef = useRef<THREE.Mesh>(null);
-  const [saturnTexture, ringsTexture] = useTexture([
-    "/assets/saturn-texture-map.jpg",
-    "/assets/saturn-rings-texture-map.png",
-  ]);
+  const { scene } = useGLTF("/assets/saturnGltf/model.gltf");
   const xAxis = 55;
   const clockRef = useRef(new THREE.Clock());
   const [hovered, setHovered] = useState(false);
@@ -60,13 +56,6 @@ const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
       saturnRef.current.position.z =
         Math.cos(clockRef.current.getElapsedTime() * 0.06) * xAxis;
     }
-    if (ringsRef.current) {
-      ringsRef.current.rotation.x = Math.PI / 2;
-      ringsRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.06) * xAxis;
-      ringsRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.06) * xAxis;
-    }
   }, []);
 
   useFrame(({ camera }) => {
@@ -108,24 +97,7 @@ const Saturn: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
         onPointerOut={() => setHovered(false)}
         position={[0, 0, 0]}
       >
-        <sphereGeometry args={[2.4, 32, 32]} />
-        <meshStandardMaterial
-          map={saturnTexture}
-          emissive={
-            hovered || isFollowed
-              ? new THREE.Color(0xffffff)
-              : new THREE.Color(0x000000)
-          }
-          emissiveIntensity={hovered || isFollowed ? 0.15 : 0}
-        />
-      </mesh>
-      <mesh ref={ringsRef} position={[0, 0, 0]}>
-        <ringGeometry args={[6, 4, 64]} />
-        <meshBasicMaterial
-          map={ringsTexture}
-          side={THREE.DoubleSide}
-          opacity={20}
-        />
+        <primitive object={scene} position={[1, 0, 0]} scale={0.003} />
       </mesh>
     </>
   );
