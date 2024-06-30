@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SparklesCore } from "./ui/sparkles";
 import { AiOutlineLike } from "react-icons/ai";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import Slider from "./Slider";
 
 const RandomQuote = () => {
