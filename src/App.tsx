@@ -8,6 +8,8 @@ import RandomQuote from "./components/RandomQuote";
 import Newsletter from "./pages/NewsLetter";
 import IssPage from "./pages/IssPage";
 import VenusPage from "./pages/SaturnPage";
+import Scope from "./pages/Scope";
+import NotFoundPage from "./components/PageNotFound";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="/newsletter" element={<Newsletter />} />
         <Route path="/iss-info" element={<IssPage />} />
         <Route path="/saturn-info" element={<VenusPage />} />
+        <Route path="/scop" element={<Scope />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
 import { Meteors } from "./ui/meteors";
 import { useGSAP } from "@gsap/react";
@@ -6,23 +6,17 @@ import { useGSAP } from "@gsap/react";
 const LoadingComponent = () => {
   const progressRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {});
-
-  useEffect(() => {
+  useGSAP(() => {
     const progressBar = progressRef.current;
 
     if (progressBar) {
       gsap.to(progressBar, {
-        duration: 5,
+        duration: 10,
         width: "100%",
-        ease: "power4.inOut",
-        onComplete: () => {
-          // Add any additional actions you want to perform after the animation completes
-          console.log("Loading complete!");
-        },
+        ease: "power4.out",
       });
     }
-  }, []);
+  });
 
   return (
     <div
@@ -33,7 +27,7 @@ const LoadingComponent = () => {
       <div className="w-4/5 h-8 bg-white bg-opacity-30 rounded-full overflow-hidden">
         <div
           ref={progressRef}
-          className="h-full bg-blue-500 transition-all duration-100"
+          className="h-full bg-blue-500"
           style={{ width: "0%" }}
         ></div>
       </div>
