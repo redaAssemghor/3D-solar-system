@@ -1,20 +1,48 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import MainContainer from "../components/MainContainer";
 import LoadingComponent from "../components/LoadingScreen";
 import Settings from "../components/Settings";
+import { FaExpand, FaCompress } from "react-icons/fa";
 
 const SimulationPage = () => {
   const [loading, setLoading] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [followedPlanet, setFollowedPlanet] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const handleToggleFollow = useCallback((planetName: string) => {
     setFollowedPlanet((prev) => (prev === planetName ? null : planetName));
   }, []);
 
+  const handleFullscreenToggle = () => {
+    if (canvasRef.current) {
+      if (!document.fullscreenElement) {
+        canvasRef.current.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
   return (
-    <div className="h-screen w-screen overflow-hidden relative">
+    <div ref={canvasRef} className="h-screen w-screen overflow-hidden relative">
       {loading && <LoadingComponent />}
       <Canvas
         camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 10, 19.5] }}
@@ -33,6 +61,14 @@ const SimulationPage = () => {
           onToggleFollow={handleToggleFollow}
         />
       )}
+      <div className="absolute top-4 right-32 z-50">
+        <button
+          onClick={handleFullscreenToggle}
+          className="bg-transparent text-white py-2"
+        >
+          {isFullscreen ? <FaCompress size={40} /> : <FaExpand size={40} />}
+        </button>
+      </div>
     </div>
   );
 };

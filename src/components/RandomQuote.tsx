@@ -54,11 +54,11 @@ const RandomQuote = () => {
         minSize={0.6}
         maxSize={1.4}
         particleDensity={100}
-        className="w-screen h-screen relative"
+        className="w-screen h-screen "
         particleColor="#FFFFFF"
       />
       <Slider />
-      <div className="text-white flex flex-col absolute m-2 py-[200px] md:py-8">
+      <div className="text-white flex flex-col absolute m-2 bottom-0 md:py-8">
         <div className="relative md:w-[800px] w-screen h-[200px] flex">
           <div
             className={`transition-opacity duration-1000 lg:m-2 m-10 flex flex-col justify-center items-center ${

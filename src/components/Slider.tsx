@@ -1,6 +1,6 @@
 const Slider = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start justify-between bg-transparent lg:absolute bottom-0 right-0 p-8 text-white">
+    <div className="flex flex-col md:flex-row items-center md:items-start justify-between bg-transparent absolute top-0 p-8 text-white">
       <div className="md:w-1/2 flex flex-col items-start justify-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Welcome to Our Solar System Exploration
