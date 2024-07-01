@@ -10,9 +10,12 @@ const Slider = () => {
           stars, and cosmic phenomena like never before. Join us on an
           interstellar journey and expand your knowledge of the universe.
         </p>
-        <button className="custom-button bg-gradient-to-r from-teal-400 to-blue-500 border-none text-white font-bold py-3 px-6 rounded-lg hover:from-blue-500 hover:to-teal-400 transition duration-300">
+        <a
+          href="/simulation"
+          className="custom-button bg-gradient-to-r from-teal-400 to-blue-500 border-none text-white font-bold py-3 px-6 rounded-lg hover:from-blue-500 hover:to-teal-400 transition duration-300"
+        >
           Explore Now
-        </button>
+        </a>
       </div>
       <div className="md:w-1/2 mt-6 md:mt-0 flex justify-center">
         <img
