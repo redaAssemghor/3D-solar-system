@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GoGear } from "react-icons/go";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import gsap from "gsap";
 
 interface SettingsProps {
   followedPlanet: string | null;
@@ -87,22 +88,28 @@ const Settings: React.FC<SettingsProps> = ({
     setExpandedPlanet((prev) => (prev === planetName ? null : planetName));
   };
 
+  gsap.to(".gear", {
+    duration: 1,
+    rotate: clicked ? 180 : 0,
+    ease: "power2.out",
+  });
+
   return (
-    <div className="absolute right-10 top-0 flex flex-col items-end">
+    <div className="absolute z-50 right-10 top-0 flex flex-row">
       <button
-        className="z-10 text-white text-6xl p-3 hover:text-[#0ff]"
+        className="gear absolute right-0 top-0 z-50 text-white text-6xl p-3 hover:text-[#0ff]"
         onClick={handleClick}
       >
         <GoGear />
       </button>
       <div
-        className={`transition-all duration-300 overflow-hidden ${
+        className={`transition-all duration-300 pr-20 pt-10 overflow-hidden ${
           clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="w-64 bg-gray-900 flex flex-col rounded-lg">
           <p className="text-blue-500 text-sm p-2">
-            Switch between different camera perspectives for a new view.
+            Double click on the planet or click Toggel Object for camera focus.
           </p>
 
           {planets.map((planet) => (
@@ -132,24 +139,26 @@ const Settings: React.FC<SettingsProps> = ({
                     {planetDescriptions[planet.name].description}
                   </p>
 
-                  <button
-                    onClick={() => onToggleFollow(planet.name)}
-                    className={`hover:text-[#0ff] font-bold rounded-lg transition-colors duration-1000 ${
-                      followedPlanet === planet.name
-                        ? "text-blue-500"
-                        : "text-white"
-                    }`}
-                  >
-                    Toggle Camera Focus
-                  </button>
-                  <a
-                    href={planetDescriptions[planet.name].link}
-                    className="text-blue-400 block hover:text-blue-200"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Learn more
-                  </a>
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => onToggleFollow(planet.name)}
+                      className={`hover:text-[#0ff] font-bold rounded-lg transition-colors duration-1000 ${
+                        followedPlanet === planet.name
+                          ? "text-blue-500"
+                          : "text-white"
+                      }`}
+                    >
+                      Toggel Object
+                    </button>
+                    <a
+                      href={planetDescriptions[planet.name].link}
+                      className="text-blue-400 block hover:text-blue-200"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Learn more
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

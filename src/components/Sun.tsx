@@ -22,6 +22,7 @@ const Sun = React.memo(() => {
         emissiveIntensity={0.6}
         emissive={0xffffff}
       />
+      <pointLight position={[0, 0, 0]} intensity={1.5} castShadow />
     </mesh>
   );
 });

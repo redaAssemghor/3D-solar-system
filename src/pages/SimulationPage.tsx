@@ -61,12 +61,12 @@ const SimulationPage = () => {
           onToggleFollow={handleToggleFollow}
         />
       )}
-      <div className="absolute top-4 right-32 z-50">
+      <div className="absolute top-4 left-3 z-50">
         <button
           onClick={handleFullscreenToggle}
           className="bg-transparent text-white py-2"
         >
-          {isFullscreen ? <FaCompress size={40} /> : <FaExpand size={40} />}
+          {isFullscreen ? <FaCompress size={30} /> : <FaExpand size={30} />}
         </button>
       </div>
     </div>

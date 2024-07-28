@@ -1,8 +1,6 @@
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
-
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+    <footer className="p-4 z-0 bg-gray-900 flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
       <div className="flex flex-col items-center md:items-start w-[500px]">
         <div className="flex flex-col md:flex-row items-center">
           <img
@@ -19,28 +17,8 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div className="flex space-x-4 md:mt-0 mt-8">
-          <a
-            href="https://facebook.com"
-            className="hover:text-[#0ff] transition duration-300 ease-in-out"
-          >
-            <FaFacebookF size={24} />
-          </a>
-          <a
-            href="https://twitter.com"
-            className="hover:text-[#0ff] transition duration-300 ease-in-out"
-          >
-            <FaTwitter size={24} />
-          </a>
-          <a
-            href="https://instagram.com"
-            className="hover:text-[#0ff] transition duration-300 ease-in-out"
-          >
-            <FaInstagram size={24} />
-          </a>
-        </div>
       </div>
-      <div className="grid grid-cols-2 gap-2 gap-x-[100px] md:grid-cols-3 justify-between md:gap-4 mb-10">
+      <div className="grid grid-cols-2 gap-2 gap-x-[100px] md:flex justify-between md:gap-8 mb-10">
         <a href="/" className="">
           Home
         </a>
