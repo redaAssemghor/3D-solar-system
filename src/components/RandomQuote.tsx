@@ -16,7 +16,7 @@ const RandomQuote = () => {
       setLoading(true);
       setLiked(false);
       setFade(true);
-      const response = await axios
+      await axios
         .get("https://quotes-api8.p.rapidapi.com/quotes/random", {
           headers: {
             "x-rapidapi-host": "quotes-api8.p.rapidapi.com",
@@ -29,7 +29,6 @@ const RandomQuote = () => {
           setAuthor(response.data.source || "Unknown");
           setLoading(false);
           setFade(false);
-          console.log("quote", quote);
         });
     } catch (error) {
       console.error("Error fetching the quote", error);
