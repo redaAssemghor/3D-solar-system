@@ -95,7 +95,7 @@ const Settings: React.FC<SettingsProps> = ({
   });
 
   return (
-    <div className="absolute z-50 right-10 top-0 flex flex-row">
+    <div className="absolute z-40 right-10 top-0 flex flex-row">
       <button
         className="gear absolute right-0 top-0 z-50 text-white text-6xl p-3 hover:text-[#0ff]"
         onClick={handleClick}

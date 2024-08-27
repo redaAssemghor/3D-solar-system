@@ -12,9 +12,11 @@ const Footer = () => {
           <div className="mt-4 md:mt-0 text-center md:text-left">
             <h2 className="text-2xl font-bold">Solar System Exploration</h2>
             <p className="text-sm mt-2">
-              Dive deep into the wonders of our solar system. Explore planets,
-              stars, and cosmic phenomena from the comfort of your home.
+              Dive deep into the wonders of our solar system. stars, and cosmic
+              phenomena from the comfort of your home.
             </p>
+            <br />
+            <p className="text-sm mt-2 font-bold">assemghor.reda@gmail.com</p>
           </div>
         </div>
       </div>

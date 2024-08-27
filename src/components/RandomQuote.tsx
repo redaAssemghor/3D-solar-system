@@ -16,15 +16,21 @@ const RandomQuote = () => {
       setLoading(true);
       setLiked(false);
       setFade(true);
-      const response = await axios.get("https://type.fit/api/quotes");
-      const quotes = response.data;
-      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      setTimeout(() => {
-        setQuote(randomQuote.text);
-        setAuthor(randomQuote.author || "Unknown");
-        setFade(false); // Trigger fade-in effect
-        setLoading(false);
-      }, 500); // Wait for the fade-out effect to complete
+      const response = await axios
+        .get("https://quotes-api8.p.rapidapi.com/quotes/random", {
+          headers: {
+            "x-rapidapi-host": "quotes-api8.p.rapidapi.com",
+            "x-rapidapi-key":
+              "69743035b2msh07525257b3071cbp15f27ejsn8d49af482058",
+          },
+        })
+        .then((response) => {
+          setQuote(response.data.quote);
+          setAuthor(response.data.source || "Unknown");
+          setLoading(false);
+          setFade(false);
+          console.log("quote", quote);
+        });
     } catch (error) {
       console.error("Error fetching the quote", error);
       setLoading(false);
@@ -60,7 +66,7 @@ const RandomQuote = () => {
               </div>
             ) : (
               <>
-                <p className="text-lg lg:text-4xl font-black italic">
+                <p className="text-sm lg:text-2xl font-semibold italic">
                   "{quote}"
                 </p>
                 <p className="text-sm m-4 quote flex-">{author}</p>
