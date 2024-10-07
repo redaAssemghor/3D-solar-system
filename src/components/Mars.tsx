@@ -31,7 +31,11 @@ const Mars: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
     }
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    const material = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5,
+    });
     return new THREE.Line(geometry, material);
   };
 

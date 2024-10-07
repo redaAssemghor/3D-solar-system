@@ -47,7 +47,11 @@ const Earth: React.FC<EarthProps> = ({
     }
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+    const material = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5,
+    });
     return new THREE.Line(geometry, material);
   };
 
@@ -123,6 +127,8 @@ const Earth: React.FC<EarthProps> = ({
           specularMap={earthSpecularMap}
           displacementMap={earthDisplacementMap}
           displacementScale={displacementScale}
+          shininess={50} // Increase shininess to improve light reflection
+          specular={new THREE.Color(0x333333)} // Adjust specular highlight color
           emissive={
             hovered || isFollowed
               ? new THREE.Color(0xffffff)

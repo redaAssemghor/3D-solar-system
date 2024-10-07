@@ -21,7 +21,7 @@ const MainContainer: React.FC<MainContainerProps> = ({
   return (
     <>
       <AnimatedStars />
-      <ambientLight intensity={1} />
+      <ambientLight intensity={0.1} />
       <Sun />
       <Mercury
         isFollowed={followedPlanet === "Mercury"}
