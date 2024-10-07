@@ -10,6 +10,7 @@ import IssPage from "./pages/IssPage";
 import VenusPage from "./pages/SaturnPage";
 import Scope from "./pages/Scope";
 import NotFoundPage from "./components/PageNotFound";
+import FooterInfo from "./components/FooterInfo";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/scop" element={<Scope />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <FooterInfo />
       <Footer />
     </div>
   );

@@ -17,7 +17,7 @@ const AnimatedStars = () => {
     }
   });
 
-  return <Stars ref={starsRef} />;
+  return <Stars ref={starsRef} fade depth={40} />;
 };
 
 export default AnimatedStars;

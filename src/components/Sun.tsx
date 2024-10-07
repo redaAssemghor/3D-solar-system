@@ -20,14 +20,14 @@ const Sun = React.memo(() => {
       <meshPhongMaterial
         map={sunTexture}
         emissiveMap={sunTexture}
-        emissiveIntensity={0.6}
-        emissive={0xffffff}
+        emissiveIntensity={4} // Increase emissive intensity for a glowing effect
+        emissive={0xffff00} // Make the glow more yellow to mimic the sun
       />
       <pointLight
         ref={lightRef} // Attach the ref to the point light
         position={[0, 0, 0]}
-        intensity={60} // Increase intensity
-        distance={5000} // Increase light distance to cover planets
+        intensity={100} // Increase light intensity
+        distance={10000} // Extend light distance to cover more planets
         decay={1} // Control light falloff
         castShadow
       />

@@ -97,7 +97,7 @@ const Earth: React.FC<EarthProps> = ({
 
       new TWEEN.Tween(camera.position)
         .to(targetPosition, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut)
+        .easing(TWEEN.Easing.Sinusoidal.InOut) // Very smooth, wave-like easing
         .onUpdate(() => camera.lookAt(earthPosition))
         .start();
     }
@@ -127,7 +127,7 @@ const Earth: React.FC<EarthProps> = ({
           specularMap={earthSpecularMap}
           displacementMap={earthDisplacementMap}
           displacementScale={displacementScale}
-          shininess={50} // Increase shininess to improve light reflection
+          shininess={5} // Increase shininess to improve light reflection
           specular={new THREE.Color(0x333333)} // Adjust specular highlight color
           emissive={
             hovered || isFollowed

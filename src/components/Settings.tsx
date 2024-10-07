@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GoGear } from "react-icons/go";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import gsap from "gsap";
 
 interface SettingsProps {
@@ -61,10 +61,7 @@ const planetDescriptions: Record<string, PlanetDescription> = {
   },
 };
 
-const Settings: React.FC<SettingsProps> = ({
-  followedPlanet,
-  onToggleFollow,
-}) => {
+const Settings: React.FC<SettingsProps> = ({ onToggleFollow }) => {
   const planets = [
     { name: "ISS" },
     { name: "Mercury" },
@@ -90,14 +87,14 @@ const Settings: React.FC<SettingsProps> = ({
 
   gsap.to(".gear", {
     duration: 1,
-    rotate: clicked ? 180 : 0,
+    rotate: clicked ? 40 : 0,
     ease: "power2.out",
   });
 
   return (
     <div className="absolute z-40 right-10 top-0 flex flex-row">
       <button
-        className="gear absolute right-0 top-0 z-50 text-white text-6xl p-3 hover:text-[#0ff]"
+        className="gear absolute right-0 top-0 z-50 text-white text-6xl p-3 hover:text-blue-500 duration-500"
         onClick={handleClick}
       >
         <GoGear />
@@ -107,9 +104,9 @@ const Settings: React.FC<SettingsProps> = ({
           clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="w-64 bg-gray-900 flex flex-col rounded-lg">
-          <p className="text-blue-500 text-sm p-2">
-            Double click on the planet or click Toggel Object for camera focus.
+        <div className="w-[400px] bg-gray-900 flex flex-col rounded-lg px-5 py-2">
+          <p className="text-blue-500 p-2 font-bold">
+            Follow a planet to track its movement
           </p>
 
           {planets.map((planet) => (
@@ -118,14 +115,15 @@ const Settings: React.FC<SettingsProps> = ({
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleExpand(planet.name);
+                  onToggleFollow(planet.name);
                 }}
-                className="flex p-2 justify-between w-full text-white neon-effect transition-colors duration-1000"
+                className="flex p-2 justify-between items-center w-full font-bold text-white neon-effect transition-colors duration-1000"
               >
                 {planet.name}
                 {expandedPlanet === planet.name ? (
-                  <FaChevronUp />
+                  <FaEye size={20} />
                 ) : (
-                  <FaChevronDown />
+                  <FaEyeSlash size={20} />
                 )}
               </button>
 
@@ -134,22 +132,12 @@ const Settings: React.FC<SettingsProps> = ({
                   expandedPlanet === planet.name ? "max-h-40" : "max-h-0"
                 }`}
               >
-                <div className="text-sm text-[#0ff] bg-gray-800 rounded-lg mt-2">
+                <div className="text-sm mt-2">
                   <p className="mb-2">
                     {planetDescriptions[planet.name].description}
                   </p>
 
                   <div className="flex justify-between">
-                    <button
-                      onClick={() => onToggleFollow(planet.name)}
-                      className={`hover:text-[#0ff] font-bold rounded-lg transition-colors duration-1000 ${
-                        followedPlanet === planet.name
-                          ? "text-blue-500"
-                          : "text-white"
-                      }`}
-                    >
-                      Toggel Object
-                    </button>
                     <a
                       href={planetDescriptions[planet.name].link}
                       className="text-blue-400 block hover:text-blue-200"
