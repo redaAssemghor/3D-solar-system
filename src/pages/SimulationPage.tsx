@@ -5,6 +5,7 @@ import MainContainer from "../components/MainContainer";
 import LoadingComponent from "../components/LoadingScreen";
 import Settings from "../components/Settings";
 import { FaExpand, FaCompress } from "react-icons/fa";
+import { UniverseBackground } from "../components/AnimatedStars";
 
 const SimulationPage = () => {
   const [loading, setLoading] = useState(true);
@@ -49,6 +50,7 @@ const SimulationPage = () => {
         onCreated={() => setLoading(false)}
       >
         <color attach="background" args={["black"]} />
+        <UniverseBackground />
         <OrbitControls />
         <MainContainer
           followedPlanet={followedPlanet}

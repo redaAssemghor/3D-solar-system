@@ -48,9 +48,9 @@ const Earth: React.FC<EarthProps> = ({
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
-      color: 0xffffff,
+      color: 0x00ff00,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.3,
     });
     return new THREE.Line(geometry, material);
   };

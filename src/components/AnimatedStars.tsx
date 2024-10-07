@@ -1,8 +1,22 @@
-import { Stars } from "@react-three/drei";
+import { Stars, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
+// Large sphere with background universe image
+export const UniverseBackground = () => {
+  const texture = useTexture("/assets/galaxy.webp"); // Your universe image
+
+  return (
+    <mesh position={[0, 0, 0]} scale={[500, 500, 500]}>
+      <sphereGeometry args={[1, 64, 64]} /> {/* Large sphere */}
+      <meshBasicMaterial map={texture} side={THREE.BackSide} />{" "}
+      {/* Inside-out */}
+    </mesh>
+  );
+};
+
+// Animated stars
 const AnimatedStars = () => {
   const starsRef =
     useRef<
@@ -17,7 +31,16 @@ const AnimatedStars = () => {
     }
   });
 
-  return <Stars ref={starsRef} fade depth={40} />;
+  return <Stars ref={starsRef} fade depth={100} count={5000} />;
 };
 
-export default AnimatedStars;
+const SimulationStars = () => {
+  return (
+    <>
+      <UniverseBackground /> {/* Hollow background geometry */}
+      <AnimatedStars /> {/* Animated stars */}
+    </>
+  );
+};
+
+export default SimulationStars;

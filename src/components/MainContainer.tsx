@@ -7,7 +7,7 @@ import Jupiter from "./Jupiter";
 import Saturn from "./Saturn";
 import Uranus from "./Uranus";
 import Neptune from "./Neptune";
-import AnimatedStars from "./AnimatedStars";
+import SimulationStars from "./AnimatedStars";
 
 interface MainContainerProps {
   handleToggleFollow: (planetName: string) => void;
@@ -20,8 +20,8 @@ const MainContainer: React.FC<MainContainerProps> = ({
 }) => {
   return (
     <>
-      <AnimatedStars />
-      <ambientLight intensity={0.1} />
+      <SimulationStars />
+      <ambientLight intensity={0.2} />
       <Sun />
       <Mercury
         isFollowed={followedPlanet === "Mercury"}

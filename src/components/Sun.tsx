@@ -27,7 +27,7 @@ const Sun = React.memo(() => {
         ref={lightRef} // Attach the ref to the point light
         position={[0, 0, 0]}
         intensity={100} // Increase light intensity
-        distance={10000} // Extend light distance to cover more planets
+        distance={40000} // Extend light distance to cover more planets
         decay={1} // Control light falloff
         castShadow
       />
