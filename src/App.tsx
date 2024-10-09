@@ -14,7 +14,7 @@ import FooterInfo from "./components/FooterInfo";
 
 function App() {
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden bg-black">
       <AnnouncementsBar />
       <Header />
       <Routes>
