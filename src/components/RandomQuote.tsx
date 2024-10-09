@@ -7,7 +7,7 @@ import Loader from "./ui/Loader";
 const RandomQuote = () => {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [fade, setFade] = useState(false);
 
   const fetchQuote = async () => {
@@ -35,7 +35,7 @@ const RandomQuote = () => {
   };
 
   useEffect(() => {
-    // fetchQuote();
+    fetchQuote();
   }, []);
 
   return (
