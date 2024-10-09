@@ -51,7 +51,7 @@ const SimulationPage = () => {
       >
         <color attach="background" args={["black"]} />
         <UniverseBackground />
-        <OrbitControls />
+        <OrbitControls minDistance={8} maxDistance={200} />
         <MainContainer
           followedPlanet={followedPlanet}
           handleToggleFollow={handleToggleFollow}
