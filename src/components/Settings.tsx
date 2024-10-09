@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { GoGear } from "react-icons/go";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import gsap from "gsap";
+import Button from "./ui/SettingsButton";
 
 interface SettingsProps {
   followedPlanet: string | null;
@@ -93,19 +93,16 @@ const Settings: React.FC<SettingsProps> = ({ onToggleFollow }) => {
 
   return (
     <div className="absolute z-40 right-10 top-0 flex flex-row">
-      <button
-        className="gear absolute right-0 top-0 z-50 text-white text-6xl p-3 hover:text-blue-500 duration-500"
-        onClick={handleClick}
-      >
-        <GoGear />
-      </button>
+      <div className="absolute right-0 top-10 z-50">
+        <Button handleClick={handleClick} />
+      </div>
       <div
         className={`transition-all duration-300 pr-20 pt-10 overflow-hidden ${
           clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="w-[400px] bg-gray-900 flex flex-col rounded-lg px-5 py-2">
-          <p className="text-blue-500 p-2 font-bold">
+        <div className="w-[400px] bg-[#1c1a1c] flex flex-col rounded-lg px-5 py-2">
+          <p className="text-[#5d41de] p-2 font-bold">
             Follow a planet to track its movement
           </p>
 
