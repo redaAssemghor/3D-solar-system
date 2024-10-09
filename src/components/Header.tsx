@@ -1,50 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
-import { IoMdMenu } from "react-icons/io";
+import Checkbox from "./ui/BurgerButton";
+import NewsButton from "./ui/NewsButton";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isExploreOpen, setIsExploreOpen] = useState(false);
 
+  const toggleExplore = () => {
+    setIsExploreOpen(!isExploreOpen);
+  };
+
   const handleClick = () => {
     navigate("/");
   };
 
-  const navigateTooNews = () => {
+  const navigateToNews = () => {
     navigate("/newsletter");
-  };
-
-  const toggleExplore = () => {
-    setIsExploreOpen(!isExploreOpen);
   };
 
   return (
     <header className="bg-black flex justify-between items-center shadow-lg relative">
       <button onClick={handleClick} className="focus:outline-none">
-        <div className="flex items-center tracking-wider hover:text-[#0ff]">
+        <div className="flex items-center tracking-wider">
           <img src="favi.png" alt="logo" className="max-w-16" />
-          <span className="font-black transition duration-1000 ease-in-out">
+          <span className="font-black transition duration-1000 ease-in-out hidden md:inline-block">
             Solar System
           </span>
         </div>
       </button>
-      <div className="flex space-x-4 mr-4">
-        <button
-          className=" bg-black border-2 border-blue-400 hover:bg-blue-400 hover:text-black font-bold py-2 px-4 rounded-xl transition duration-1000 ease-in-out focus:outline-none"
-          onClick={navigateTooNews}
-        >
-          Newsletter
-        </button>
-        <button
-          className="flex items-end gap-1 border-2 border-blue-400 hover:bg-blue-400 hover:text-black font-bold py-2 px-4 rounded-xl transition duration-1000 ease-in-out focus:outline-none"
-          onClick={toggleExplore}
-        >
-          Explore
-          <IoMdMenu size={22} />
-        </button>
+      <div className="flex items-center space-x-4 mr-4">
+        <NewsButton handleNavigate={navigateToNews} />
+        <div className="relative z-50">
+          <Checkbox handleExplore={toggleExplore} />
+        </div>
       </div>
-      <DropdownMenu isOpen={isExploreOpen} onClose={toggleExplore} />
+      <DropdownMenu isOpen={isExploreOpen} />
     </header>
   );
 };

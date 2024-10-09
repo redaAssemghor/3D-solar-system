@@ -1,6 +1,6 @@
 const FooterInfo = () => {
   return (
-    <div className="bg-transparent">
+    <div className="bg-transparent z-40 relative">
       <div
         className="bg-cover bg-center h-40 w-full z-0 block"
         style={{

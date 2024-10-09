@@ -6,36 +6,3 @@
   margin: 0;
   padding: 0;
 }
-
-.custom-button {
-  background: linear-gradient(135deg, #3e4e50 0%, #83c5be 100%);
-  border: 2px solid #fff;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 10px 20px;
-  position: relative;
-  text-align: center;
-  transition: all 0.3s ease-in-out;
-}
-
-.custom-button:hover {
-  background: linear-gradient(135deg, #83c5be 0%, #006d77 100%);
-}
-
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-  .custom-button {
-    font-size: 1.25rem;
-    padding: 8px 16px;
-  }
-}
-
-/* Media query for extra small screens */
-@media (max-width: 480px) {
-  .custom-button {
-    font-size: 1rem;
-    padding: 6px 12px;
-  }
-}

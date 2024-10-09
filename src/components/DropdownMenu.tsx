@@ -5,13 +5,12 @@ import { MdLiveTv } from "react-icons/md";
 
 interface DropdownMenuProps {
   isOpen: boolean;
-  onClose: () => void;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen, onClose }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen }) => {
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-8 transition-opacity duration-300 ${
+      className={`fixed z-40 inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center p-8 transition-opacity duration-300 ${
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
       aria-hidden={!isOpen}
@@ -67,12 +66,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen, onClose }) => {
           <span className="text-xl text-white">Moon</span>
         </button>
       </div>
-      <button
-        className="mt-10 neon-effect bg-black border-2 border-blue-400 hover:bg-blue-400 hover:text-black text-blue-400 font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none"
-        onClick={onClose}
-      >
-        Close
-      </button>
     </div>
   );
 };

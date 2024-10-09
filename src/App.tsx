@@ -4,13 +4,13 @@ import SimulationPage from "./pages/SimulationPage";
 import { Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Footer from "./components/Footer";
-import RandomQuote from "./components/RandomQuote";
 import Newsletter from "./pages/NewsLetter";
 import IssPage from "./pages/IssPage";
 import VenusPage from "./pages/SaturnPage";
 import Scope from "./pages/Scope";
 import NotFoundPage from "./components/PageNotFound";
 import FooterInfo from "./components/FooterInfo";
+import Slider from "./components/Slider";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
           element={
             <>
               <MainPage />
-              <RandomQuote />
+              <Slider />
             </>
           }
         />
