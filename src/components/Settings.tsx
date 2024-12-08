@@ -92,8 +92,8 @@ const Settings: React.FC<SettingsProps> = ({ onToggleFollow }) => {
   });
 
   return (
-    <div className="absolute z-40 right-10 top-0 flex flex-row">
-      <div className="absolute right-0 top-10 z-50">
+    <div className="absolute z-40 right-2 top-0 flex flex-row">
+      <div className="absolute right-24 top-12 z-50">
         <Button handleClick={handleClick} />
       </div>
       <div
@@ -101,9 +101,9 @@ const Settings: React.FC<SettingsProps> = ({ onToggleFollow }) => {
           clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="w-[400px] bg-[#1c1a1c] flex flex-col rounded-lg px-5 py-2">
+        <div className="w-[400px] bg-[#1c1a1c] flex flex-col rounded-lg px-5 py-8">
           <p className="text-[#5d41de] p-2 font-bold">
-            Follow a planet to track its movement
+            Click a planet to track its movement
           </p>
 
           {planets.map((planet) => (

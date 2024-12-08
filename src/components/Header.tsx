@@ -21,7 +21,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-black flex justify-between items-center shadow-lg relative">
+    <header className="bg-black flex justify-between items-center relative lg:px-16">
       <button onClick={handleClick} className="focus:outline-none">
         <div className="flex items-center tracking-wider">
           <img src="favi.png" alt="logo" className="max-w-16" />

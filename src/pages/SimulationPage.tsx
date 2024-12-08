@@ -63,7 +63,7 @@ const SimulationPage = () => {
           onToggleFollow={handleToggleFollow}
         />
       )}
-      <div className="absolute top-4 left-3 z-40">
+      <div className="absolute top-10 left-10 z-40">
         <button
           onClick={handleFullscreenToggle}
           className="bg-transparent text-white py-2"

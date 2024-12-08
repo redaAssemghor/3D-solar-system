@@ -42,7 +42,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen }) => {
         </a>
 
         <a
-          href="iss-info"
+          href="/iss-info"
           className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none"
         >
           <FaRocket className="text-6xl text-blue-400 mb-4" />

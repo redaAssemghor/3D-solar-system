@@ -10,9 +10,9 @@ const Button = ({ handleClick }: ButtonProps) => {
       <button className="button" onClick={handleClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
+          width="30"
           viewBox="0 0 20 20"
-          height="20"
+          height="30"
           fill="none"
           className="svg-icon"
         >
@@ -25,7 +25,6 @@ const Button = ({ handleClick }: ButtonProps) => {
             />
           </g>
         </svg>
-        <span className="lable">Settings</span>
       </button>
     </StyledWrapper>
   );
@@ -36,22 +35,12 @@ const StyledWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 6px 12px;
-    gap: 8px;
-    height: 36px;
-    width: 120px;
+    height: 56px;
+    width: 56px;
     border: none;
     background: #1c1a1c;
     border-radius: 2px;
     cursor: pointer;
-  }
-
-  .lable {
-    line-height: 20px;
-    font-size: 17px;
-    color: #5d41de;
-    font-family: sans-serif;
-    letter-spacing: 1px;
   }
 
   .button:hover {

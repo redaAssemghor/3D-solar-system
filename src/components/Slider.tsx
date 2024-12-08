@@ -11,7 +11,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative lg:px-16">
       <SparklesCore
         id="tsparticlesfullpage"
         background="transparent"

@@ -1,5 +1,4 @@
 import Header from "./components/Header";
-import AnnouncementsBar from "./components/AnnouncementsBar.";
 import SimulationPage from "./pages/SimulationPage";
 import { Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
@@ -15,7 +14,6 @@ import Slider from "./components/Slider";
 function App() {
   return (
     <div className="overflow-hidden bg-black">
-      <AnnouncementsBar />
       <Header />
       <Routes>
         <Route
