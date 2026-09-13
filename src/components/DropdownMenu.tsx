@@ -1,6 +1,5 @@
-import { FaRocket, FaStar, FaMeteor, FaGlobe, FaMoon } from "react-icons/fa";
+import { FaRocket } from "react-icons/fa";
 import { IoPlanetSharp } from "react-icons/io5";
-import { LuMailPlus } from "react-icons/lu";
 import { MdLiveTv } from "react-icons/md";
 
 interface DropdownMenuProps {
@@ -17,14 +16,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen }) => {
       role="dialog"
     >
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-8 max-w-screen-lg w-full">
-        <a
-          href="/newsletter"
-          className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none"
-        >
-          <LuMailPlus className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Newsletter</span>
-        </a>
-
         <a
           href="/saturn-info"
           className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none"
@@ -49,22 +40,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen }) => {
           <span className="text-xl text-white">ISS</span>
         </a>
 
-        <button className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none">
-          <FaStar className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Stars</span>
-        </button>
-        <button className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none">
-          <FaMeteor className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Meteors</span>
-        </button>
-        <button className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none">
-          <FaGlobe className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Earth</span>
-        </button>
-        <button className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none">
-          <FaMoon className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Moon</span>
-        </button>
       </div>
     </div>
   );

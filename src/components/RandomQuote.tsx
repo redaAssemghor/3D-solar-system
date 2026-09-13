@@ -39,9 +39,9 @@ const RandomQuote = () => {
   }, []);
 
   return (
-    <section className="lg:px-8 h-[250px] relative">
+    <section className="relative mx-auto min-h-[210px] w-full max-w-7xl px-5 pb-12 sm:px-8 lg:px-12">
       <div
-        className={`transition-opacity duration-1000 lg:m-2 m-10 flex flex-col ${
+        className={`max-w-3xl transition-opacity duration-1000 ${
           fade ? "opacity-0" : "opacity-100"
         }`}
       >
@@ -51,13 +51,13 @@ const RandomQuote = () => {
             <Loader />
           </div>
         ) : (
-          <div className="space-y-3">
-            <p className="text-sm lg:text-2xl font-semibold italic">{quote}</p>
-            <p className="text-sm quote flex-">{author}</p>
+          <div className="space-y-3 border-l border-emerald-300/50 pl-5">
+            <p className="text-sm font-semibold italic leading-6 text-slate-200 lg:text-lg">{quote}</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-emerald-300">{author}</p>
           </div>
         )}
       </div>
-      <div className="flex gap-4 ml-4 absolute bottom-5 left-5">
+      <div className="absolute bottom-12 right-5 flex gap-4 sm:right-8 lg:right-12">
         <Button />
         <NextButton fetchQuote={fetchQuote} />
       </div>

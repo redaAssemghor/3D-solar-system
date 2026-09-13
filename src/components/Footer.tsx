@@ -1,37 +1,34 @@
 const Footer = () => {
   return (
-    <footer className="flex flex-col bg-black p-4 lg:px-16">
-      <div className="z-0 flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-        <div className="flex flex-col items-center md:items-start w-[500px]">
+    <footer className="bg-black px-5 py-10 sm:px-8 lg:px-12">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-8 md:flex-row">
+        <div className="flex flex-col items-center md:items-start">
           <div className="flex flex-col md:flex-row items-center">
             <img
               src="favi.png"
               alt="App Logo"
               className="w-24 h-24 md:w-32 md:h-32"
             />
-            <div className="text-xs text-center">
+            <div className="text-center text-xs md:text-left">
               <p>&copy; 2024 Solar System Exploration. All rights reserved.</p>
               <p>assemghor.reda@gmail.com</p>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 gap-x-[100px] md:flex justify-between md:gap-8 mb-10">
-          <a href="/" className="">
+        <nav className="grid grid-cols-2 gap-x-10 gap-y-3 text-sm text-slate-300 md:flex md:gap-8">
+          <a href="/" className="transition-colors hover:text-white">
             Home
           </a>
-          <a href="/scop" className="">
+          <a href="/scop" className="transition-colors hover:text-white">
             Live Model
           </a>
-          <a href="/saturn-info" className="">
+          <a href="/saturn-info" className="transition-colors hover:text-white">
             Saturn
           </a>
-          <a href="/newsletter" className="">
-            Newsletter
-          </a>
-          <a href="/iss-info" className="">
+          <a href="/iss-info" className="transition-colors hover:text-white">
             ISS
           </a>
-        </div>
+        </nav>
       </div>
     </footer>
   );

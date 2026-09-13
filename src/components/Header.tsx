@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import Checkbox from "./ui/BurgerButton";
-import NewsButton from "./ui/NewsButton";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,22 +15,17 @@ const Header = () => {
     navigate("/");
   };
 
-  const navigateToNews = () => {
-    navigate("/newsletter");
-  };
-
   return (
-    <header className="bg-black flex justify-between items-center relative lg:px-16">
-      <button onClick={handleClick} className="focus:outline-none">
-        <div className="flex items-center tracking-wider">
-          <img src="favi.png" alt="logo" className="max-w-16" />
+    <header className="relative z-50 border-b border-white/10 bg-black">
+      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-12">
+        <button onClick={handleClick} className="focus:outline-none">
+          <div className="flex items-center gap-3 tracking-wider">
+            <img src="favi.png" alt="Solar System logo" className="h-12 w-12" />
           <span className="font-black transition duration-1000 ease-in-out hidden md:inline-block">
             Solar System
           </span>
-        </div>
-      </button>
-      <div className="flex items-center space-x-4 mr-4">
-        <NewsButton handleNavigate={navigateToNews} />
+          </div>
+        </button>
         <div className="relative z-50">
           <Checkbox handleExplore={toggleExplore} />
         </div>
