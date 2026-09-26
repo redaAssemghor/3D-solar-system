@@ -18,3 +18,7 @@ body,
 body {
   overflow-x: hidden;
 }
+
+.space-control { display:inline-flex; align-items:center; justify-content:center; gap:.6rem; min-height:42px; padding:.6rem 1rem; border:1px solid #6ee7b740; border-radius:999px; background:#08141ef0; color:#dceae8; font-size:.8rem; transition:background .2s,border-color .2s; }
+.space-control:hover,.space-control[aria-pressed="true"] { background:#12312f; border-color:#6ee7b7; }
+.space-control:focus-visible { outline:2px solid #6ee7b7; outline-offset:3px; }

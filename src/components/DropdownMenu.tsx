@@ -1,48 +1,11 @@
-import { FaRocket } from "react-icons/fa";
-import { IoPlanetSharp } from "react-icons/io5";
-import { MdLiveTv } from "react-icons/md";
-
-interface DropdownMenuProps {
-  isOpen: boolean;
-}
-
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen }) => {
-  return (
-    <div
-      className={`fixed z-40 inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center p-8 transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
-      aria-hidden={!isOpen}
-      role="dialog"
-    >
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-8 max-w-screen-lg w-full">
-        <a
-          href="/saturn-info"
-          className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none"
-        >
-          <IoPlanetSharp className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Saturn</span>
-        </a>
-
-        <a
-          href="/scop"
-          className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none"
-        >
-          <MdLiveTv className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">Live Model</span>
-        </a>
-
-        <a
-          href="/iss-info"
-          className="mb-5 hover:bg-gray-500 p-2 rounded-3xl flex flex-col items-center focus:outline-none"
-        >
-          <FaRocket className="text-6xl text-blue-400 mb-4" />
-          <span className="text-xl text-white">ISS</span>
-        </a>
-
-      </div>
+import { Link } from "react-router-dom";
+interface Props { isOpen: boolean; onClose: () => void }
+export default function DropdownMenu({ isOpen, onClose }: Props) {
+  return <nav id="explore-menu" aria-label="Explore" hidden={!isOpen}
+    className="absolute inset-x-0 top-full max-h-[calc(100dvh-5rem)] overflow-y-auto border-b border-white/10 bg-black/95 p-6 shadow-xl">
+    <div className="mx-auto grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">
+      {[["/simulation", "Simulation"], ["/saturn-info", "Saturn"], ["/scop", "Live Model"], ["/iss-info", "ISS"]].map(([to, label]) =>
+        <Link key={to} to={to} onClick={onClose} className="rounded-xl p-5 text-center text-white transition-colors hover:bg-violet-600/30 focus-visible:outline focus-visible:outline-violet-400">{label}</Link>)}
     </div>
-  );
-};
-
-export default DropdownMenu;
+  </nav>;
+}

@@ -1,8 +1,7 @@
 import { useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useBodyAnimation } from "./useBodyAnimation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import * as TWEEN from "@tweenjs/tween.js";
 import Moon from "./Moon";
 import SpaceStation from "./SpaceStation";
 
@@ -30,14 +29,13 @@ const Earth: React.FC<EarthProps> = ({
       "/assets/earth_specular.jpg",
       "/assets/earth_displacement.jpg",
     ]);
-  const xAxis = 23;
-  const clockRef = useRef(new THREE.Clock());
+  const xAxis = 1 * 23; // Mean orbital distance: 1 AU = 23 scene units.
   const [hovered, setHovered] = useState(false);
 
-  const createOrbitPath = () => {
+  const createOrbitPath = useCallback(() => {
     const points = [];
     const radius = xAxis;
-    const segments = 64;
+    const segments = 256;
 
     for (let i = 0; i <= segments; i++) {
       const theta = (i / segments) * Math.PI * 2;
@@ -48,12 +46,12 @@ const Earth: React.FC<EarthProps> = ({
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
-      color: 0x00ff00,
+      color: 0x6ee7b7,
       transparent: true,
       opacity: 0.3,
     });
     return new THREE.Line(geometry, material);
-  };
+  }, [xAxis]);
 
   useEffect(() => {
     const orbitPath = createOrbitPath();
@@ -67,66 +65,34 @@ const Earth: React.FC<EarthProps> = ({
       if (earthParent) {
         earthParent.remove(orbitPath);
       }
+      orbitPath.geometry.dispose();
+      orbitPath.material.dispose();
     };
-  }, []);
+  }, [createOrbitPath]);
 
-  const orbitAnimation = useCallback(() => {
-    if (groupRef.current) {
-      groupRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.1) * xAxis;
-      groupRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.1) * xAxis;
-    }
-  }, []);
-
-  const rotationAnimation = useCallback(() => {
-    if (earthRef.current) earthRef.current.rotation.y += 0.005;
-  }, []);
-
-  useFrame(({ camera }) => {
-    orbitAnimation();
-    rotationAnimation();
-    const earthPosition = groupRef.current?.position;
-
-    if (isFollowed && earthPosition) {
-      const targetPosition = new THREE.Vector3(
-        earthPosition.x + 10,
-        earthPosition.y + 2,
-        earthPosition.z + 5
-      );
-
-      new TWEEN.Tween(camera.position)
-        .to(targetPosition, 1000)
-        .easing(TWEEN.Easing.Sinusoidal.InOut) // Very smooth, wave-like easing
-        .onUpdate(() => camera.lookAt(earthPosition))
-        .start();
-    }
-  });
-
-  useFrame(() => {
-    TWEEN.update();
-  });
+  useBodyAnimation(groupRef, xAxis, 0.10322867426910602, isFollowed, earthRef);
 
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
+    return () => { document.body.style.cursor = "auto"; };
   }, [hovered]);
 
   return (
     <group
       ref={groupRef}
-      onClick={onToggleFollow}
+      onClick={(event) => { event.stopPropagation(); onToggleFollow(); }}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
     >
       <mesh ref={earthRef}>
-        <sphereGeometry args={[1, 32, 32]} />
+        <sphereGeometry args={[1 * 0.4, 48, 48]} />
         <meshPhongMaterial
           map={earthTexture}
           normalMap={earthNormalMap}
           specularMap={earthSpecularMap}
           displacementMap={earthDisplacementMap}
-          displacementScale={displacementScale}
+          displacementScale={displacementScale * 0.05}
           shininess={5} // Increase shininess to improve light reflection
           specular={new THREE.Color(0x333333)} // Adjust specular highlight color
           emissive={
@@ -138,7 +104,7 @@ const Earth: React.FC<EarthProps> = ({
         />
       </mesh>
       <SpaceStation
-        scale={0.005}
+        scale={0.001}
         issIsFollowed={issIsFollowed}
         onToggleFollow={onToggleFollowISS}
       />

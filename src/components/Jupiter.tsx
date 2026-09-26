@@ -1,8 +1,7 @@
 import { useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useBodyAnimation } from "./useBodyAnimation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import * as TWEEN from "@tweenjs/tween.js";
 
 interface PlanetProps {
   isFollowed: boolean;
@@ -11,16 +10,14 @@ interface PlanetProps {
 
 const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const jupiterRef = useRef<THREE.Mesh>(null);
-  const textRef = useRef<THREE.Object3D>(null);
   const [jupiterTexture] = useTexture(["/assets/jupiter-texture-map.jpg"]);
-  const xAxis = 45;
-  const clockRef = useRef(new THREE.Clock());
+  const xAxis = 5.204 * 23; // Mean orbital distance: 1 AU = 23 scene units.
   const [hovered, setHovered] = useState(false);
 
-  const createOrbitPath = () => {
+  const createOrbitPath = useCallback(() => {
     const points = [];
     const radius = xAxis;
-    const segments = 64;
+    const segments = 256;
 
     for (let i = 0; i <= segments; i++) {
       const theta = (i / segments) * Math.PI * 2;
@@ -31,12 +28,12 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
-      color: 0x00ff00,
+      color: 0x6ee7b7,
       transparent: true,
       opacity: 0.3,
     });
     return new THREE.Line(geometry, material);
-  };
+  }, [xAxis]);
 
   useEffect(() => {
     const orbitPath = createOrbitPath();
@@ -50,63 +47,28 @@ const Jupiter: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
       if (jupiterParent) {
         jupiterParent.remove(orbitPath);
       }
+      orbitPath.geometry.dispose();
+      orbitPath.material.dispose();
     };
-  }, []);
+  }, [createOrbitPath]);
 
-  const jupiterAnimations = useCallback(() => {
-    if (jupiterRef.current) {
-      jupiterRef.current.rotation.y += 0.005;
-      jupiterRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.07) * xAxis;
-      jupiterRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.07) * xAxis;
-    }
-  }, []);
-
-  useFrame(({ camera }) => {
-    jupiterAnimations();
-    const jupiterPosition = jupiterRef.current?.position;
-
-    if (textRef.current && jupiterPosition) {
-      textRef.current.position.set(
-        jupiterPosition.x,
-        jupiterPosition.y + 5,
-        jupiterPosition.z
-      );
-    }
-
-    if (isFollowed && jupiterPosition) {
-      const targetPosition = new THREE.Vector3(
-        jupiterPosition.x + 10,
-        jupiterPosition.y + 2,
-        jupiterPosition.z + 5
-      );
-      new TWEEN.Tween(camera.position)
-        .to(targetPosition, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut)
-        .onUpdate(() => camera.lookAt(jupiterPosition))
-        .start();
-    }
-  });
-
-  useFrame(() => {
-    TWEEN.update();
-  });
+  useBodyAnimation(jupiterRef, xAxis, 0.008704482069516859, isFollowed);
 
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
+    return () => { document.body.style.cursor = "auto"; };
   }, [hovered]);
 
   return (
     <>
       <mesh
         ref={jupiterRef}
-        onDoubleClick={onToggleFollow}
+        onClick={(event) => { event.stopPropagation(); onToggleFollow(); }}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         position={[0, 0, 0]}
       >
-        <sphereGeometry args={[3, 32, 32]} />
+        <sphereGeometry args={[11.21 * 0.4, 48, 48]} />
         <meshStandardMaterial
           map={jupiterTexture}
           emissive={

@@ -1,8 +1,7 @@
 import { useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useBodyAnimation } from "./useBodyAnimation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import * as TWEEN from "@tweenjs/tween.js";
 
 interface PlanetProps {
   isFollowed: boolean;
@@ -12,14 +11,13 @@ interface PlanetProps {
 const Neptune: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
   const neptuneRef = useRef<THREE.Mesh>(null);
   const [neptuneTexture] = useTexture(["/assets/neptune-texture-map.jpg"]);
-  const xAxis = 100;
-  const clockRef = useRef(new THREE.Clock());
+  const xAxis = 30.18 * 23; // Mean orbital distance: 1 AU = 23 scene units.
   const [hovered, setHovered] = useState(false);
 
-  const createOrbitPath = () => {
+  const createOrbitPath = useCallback(() => {
     const points = [];
     const radius = xAxis;
-    const segments = 64;
+    const segments = 256;
 
     for (let i = 0; i <= segments; i++) {
       const theta = (i / segments) * Math.PI * 2;
@@ -30,12 +28,12 @@ const Neptune: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
-      color: 0x00ff00,
+      color: 0x6ee7b7,
       transparent: true,
       opacity: 0.3,
     });
     return new THREE.Line(geometry, material);
-  };
+  }, [xAxis]);
 
   useEffect(() => {
     const orbitPath = createOrbitPath();
@@ -49,58 +47,27 @@ const Neptune: React.FC<PlanetProps> = ({ isFollowed, onToggleFollow }) => {
       if (neptuneParent) {
         neptuneParent.remove(orbitPath);
       }
+      orbitPath.geometry.dispose();
+      orbitPath.material.dispose();
     };
-  }, []);
+  }, [createOrbitPath]);
 
-  const neptuneAnimations = useCallback(() => {
-    if (neptuneRef.current) {
-      neptuneRef.current.rotation.y += 0.005;
-      neptuneRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.05) * xAxis;
-      neptuneRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.05) * xAxis;
-    }
-  }, []);
-
-  useFrame(({ camera }) => {
-    neptuneAnimations();
-    const neptunePosition = neptuneRef.current?.position;
-
-    // Apply smooth camera transition using TWEEN
-    if (isFollowed && neptunePosition) {
-      const targetPosition = new THREE.Vector3(
-        neptunePosition.x + 10,
-        neptunePosition.y + 2,
-        neptunePosition.z + 5
-      );
-
-      // Create a new TWEEN for camera position
-      new TWEEN.Tween(camera.position)
-        .to(targetPosition, 1000) // Move to the target position over 1 second
-        .easing(TWEEN.Easing.Quadratic.InOut) // Use a quadratic easing function for smoothness
-        .onUpdate(() => camera.lookAt(neptunePosition)) // Continuously update the camera's lookAt position
-        .start();
-    }
-  });
-
-  // Update TWEEN animations
-  useFrame(() => {
-    TWEEN.update();
-  });
+  useBodyAnimation(neptuneRef, xAxis, 0.0006304199304862461, isFollowed);
 
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
+    return () => { document.body.style.cursor = "auto"; };
   }, [hovered]);
 
   return (
     <mesh
       ref={neptuneRef}
-      onDoubleClick={onToggleFollow}
+      onClick={(event) => { event.stopPropagation(); onToggleFollow(); }}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       position={[0, 0, 0]}
     >
-      <sphereGeometry args={[2.2, 32, 32]} />
+      <sphereGeometry args={[3.88 * 0.4, 48, 48]} />
       <meshStandardMaterial
         map={neptuneTexture}
         emissive={

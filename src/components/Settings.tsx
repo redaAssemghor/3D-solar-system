@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import gsap from "gsap";
-import Button from "./ui/SettingsButton";
+
+import { FaCog } from "react-icons/fa";
 
 interface SettingsProps {
   followedPlanet: string | null;
@@ -22,27 +23,27 @@ const planetDescriptions: Record<string, PlanetDescription> = {
   Mercury: {
     description:
       "Mercury is the smallest planet in the Solar System and the closest to the Sun.",
-    link: "/mercury-info",
+    link: "",
   },
   Venus: {
     description:
       "Venus is the second planet from the Sun. It is known as Earth's sister planet.",
-    link: "/venus-info",
+    link: "",
   },
   Earth: {
     description:
       "Earth is the third planet from the Sun and the only astronomical object known to harbor life.",
-    link: "/earth-info",
+    link: "",
   },
   Mars: {
     description:
       "Mars is the fourth planet from the Sun and is known as the Red Planet.",
-    link: "/mars-info",
+    link: "",
   },
   Jupiter: {
     description:
       "Jupiter is the largest planet in the Solar System and is known for its Great Red Spot.",
-    link: "/jupiter-info",
+    link: "",
   },
   Saturn: {
     description:
@@ -52,106 +53,60 @@ const planetDescriptions: Record<string, PlanetDescription> = {
   Uranus: {
     description:
       "Uranus is the seventh planet from the Sun and has a unique sideways rotation.",
-    link: "/uranus-info",
+    link: "",
   },
   Neptune: {
     description:
       "Neptune is the eighth planet from the Sun and is known for its deep blue color.",
-    link: "/neptune-info",
+    link: "",
   },
 };
 
-const Settings: React.FC<SettingsProps> = ({ onToggleFollow }) => {
-  const planets = [
-    { name: "ISS" },
-    { name: "Mercury" },
-    { name: "Venus" },
-    { name: "Earth" },
-    { name: "Mars" },
-    { name: "Jupiter" },
-    { name: "Saturn" },
-    { name: "Uranus" },
-    { name: "Neptune" },
-  ];
-
-  const [clicked, setClicked] = useState(false);
-  const [expandedPlanet, setExpandedPlanet] = useState<string | null>(null);
-
-  const handleClick = () => {
-    setClicked((prev) => !prev);
-  };
-
-  const toggleExpand = (planetName: string) => {
-    setExpandedPlanet((prev) => (prev === planetName ? null : planetName));
-  };
-
-  gsap.to(".gear", {
-    duration: 1,
-    rotate: clicked ? 40 : 0,
-    ease: "power2.out",
-  });
-
-  return (
-    <div className="absolute z-40 right-2 top-0 flex flex-row">
-      <div className="absolute right-24 top-12 z-50">
-        <Button handleClick={handleClick} />
-      </div>
-      <div
-        className={`transition-all duration-300 pr-20 pt-10 overflow-hidden ${
-          clicked ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="w-[400px] bg-[#1c1a1c] flex flex-col rounded-lg px-5 py-8">
-          <p className="text-[#5d41de] p-2 font-bold">
-            Click a planet to track its movement
-          </p>
-
-          {planets.map((planet) => (
-            <div key={planet.name}>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleExpand(planet.name);
-                  onToggleFollow(planet.name);
-                }}
-                className="flex p-2 justify-between items-center w-full font-bold text-white neon-effect transition-colors duration-1000"
-              >
-                {planet.name}
-                {expandedPlanet === planet.name ? (
-                  <FaEye size={20} />
-                ) : (
-                  <FaEyeSlash size={20} />
-                )}
-              </button>
-
-              <div
-                className={`transition-all duration-1000 overflow-hidden p-2 ${
-                  expandedPlanet === planet.name ? "max-h-40" : "max-h-0"
-                }`}
-              >
-                <div className="text-sm mt-2">
-                  <p className="mb-2">
-                    {planetDescriptions[planet.name].description}
-                  </p>
-
-                  <div className="flex justify-between">
-                    <a
-                      href={planetDescriptions[planet.name].link}
-                      className="text-blue-400 block hover:text-blue-200"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Learn more
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+const Settings: React.FC<SettingsProps> = ({ followedPlanet, onToggleFollow }) => {
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!root.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOpen(false); toggle.current?.focus(); }
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", escape);
+    };
+  }, [open]);
+  return <div ref={root} className="absolute right-4 top-16 z-40 text-white">
+    <button ref={toggle} type="button" aria-label="Planet settings" aria-expanded={open}
+      aria-controls="planet-settings" onClick={() => setOpen(value => !value)}
+      className="space-control ml-auto">
+      <FaCog size={16} className={open ? "rotate-90 transition-transform" : "transition-transform"} />
+      Planets
+    </button>
+    <section id="planet-settings" aria-label="Planet tracking" hidden={!open}
+      className="mt-3 max-h-[calc(100dvh-11rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border border-white/15 bg-zinc-900/95 p-4 shadow-xl">
+      <h2 className="mb-2 font-bold text-emerald-300">Track a planet or the ISS</h2>
+      <p className="mb-3 text-sm text-zinc-400">Select again to stop following. Drag to explore when tracking is off.</p>
+      {Object.entries(planetDescriptions).map(([name, info]) => {
+        const active = followedPlanet === name;
+        return <div key={name} className="border-t border-white/10">
+          <button type="button" aria-pressed={active} aria-expanded={active}
+            aria-controls={"details-" + name} onClick={() => onToggleFollow(name)}
+            className={"flex w-full items-center justify-between rounded p-3 text-left font-semibold hover:bg-white/10 focus-visible:outline focus-visible:outline-emerald-400 " + (active ? "text-emerald-300" : "text-white")}>
+            {name}{active ? <FaEye aria-hidden="true" /> : <FaEyeSlash aria-hidden="true" />}
+          </button>
+          <div id={"details-" + name} hidden={!active} className="px-3 pb-3 text-sm text-zinc-300">
+            <p>{info.description}</p>
+            {info.link && <Link to={info.link} className="mt-2 inline-block text-blue-300 underline">Learn more</Link>}
+          </div>
+        </div>;
+      })}
+    </section>
+  </div>;
 };
-
 export default Settings;

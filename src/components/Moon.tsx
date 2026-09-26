@@ -1,13 +1,12 @@
 import { useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useEffect, useRef } from "react";
+import { useBodyAnimation } from "./useBodyAnimation";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 const Moon = React.memo(() => {
   const moonRef = useRef<THREE.Mesh>(null);
   const [moonTexture] = useTexture(["/assets/moon_map.jpg"]);
-  const xAxis = 4;
-  const clockRef = useRef(new THREE.Clock());
+  const xAxis = 2.4;
   const createOrbitPath = () => {
     const points = [];
     const radius = xAxis;
@@ -22,7 +21,7 @@ const Moon = React.memo(() => {
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
-      color: 0x00ff00,
+      color: 0x6ee7b7,
       transparent: true,
       opacity: 0.3,
     });
@@ -41,26 +40,17 @@ const Moon = React.memo(() => {
       if (moonParent) {
         moonParent.remove(orbitPath);
       }
+      orbitPath.geometry.dispose();
+      orbitPath.material.dispose();
     };
   }, []);
 
-  const moonAnimations = useCallback(() => {
-    if (moonRef.current) {
-      // orbit rotation
-      moonRef.current.rotation.x += 0.005;
-      // axis rotation
-      moonRef.current.position.x =
-        Math.sin(clockRef.current.getElapsedTime() * 0.5) * xAxis;
-      moonRef.current.position.z =
-        Math.cos(clockRef.current.getElapsedTime() * 0.5) * xAxis;
-    }
-  }, []);
+  useBodyAnimation(moonRef, xAxis, 0.5);
 
-  useFrame(moonAnimations);
 
   return (
     <mesh ref={moonRef} position={[4, 0, 0]}>
-      <sphereGeometry args={[0.5, 32, 32]} />
+      <sphereGeometry args={[0.109, 32, 32]} />
       <meshStandardMaterial map={moonTexture} />
     </mesh>
   );

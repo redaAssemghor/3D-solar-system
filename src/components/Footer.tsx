@@ -1,37 +1,13 @@
-const Footer = () => {
-  return (
-    <footer className="bg-black px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-8 md:flex-row">
-        <div className="flex flex-col items-center md:items-start">
-          <div className="flex flex-col md:flex-row items-center">
-            <img
-              src="favi.png"
-              alt="App Logo"
-              className="w-24 h-24 md:w-32 md:h-32"
-            />
-            <div className="text-center text-xs md:text-left">
-              <p>&copy; 2024 Solar System Exploration. All rights reserved.</p>
-              <p>assemghor.reda@gmail.com</p>
-            </div>
-          </div>
-        </div>
-        <nav className="grid grid-cols-2 gap-x-10 gap-y-3 text-sm text-slate-300 md:flex md:gap-8">
-          <a href="/" className="transition-colors hover:text-white">
-            Home
-          </a>
-          <a href="/scop" className="transition-colors hover:text-white">
-            Live Model
-          </a>
-          <a href="/saturn-info" className="transition-colors hover:text-white">
-            Saturn
-          </a>
-          <a href="/iss-info" className="transition-colors hover:text-white">
-            ISS
-          </a>
-        </nav>
-      </div>
-    </footer>
-  );
-};
-
-export default Footer;
+import { Link } from "react-router-dom";
+export default function Footer() {
+  return <footer className="border-t border-white/10 bg-black px-5 py-6 text-xs text-slate-400">
+    <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+      <p>© {new Date().getFullYear()} Solar System</p>
+      <nav aria-label="Footer" className="flex gap-6">
+        <Link className="hover:text-emerald-300" to="/">Home</Link>
+        <Link className="hover:text-emerald-300" to="/simulation">Explore</Link>
+        <a className="hover:text-emerald-300" href="mailto:assemghor.reda@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </footer>;
+}

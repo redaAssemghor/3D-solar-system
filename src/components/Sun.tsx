@@ -1,22 +1,22 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useCallback, useRef } from "react";
+import React, { useRef, useContext } from "react";
+import { SimulationTime } from "./SimulationTime";
 import * as THREE from "three";
 
 const Sun = React.memo(() => {
+  const speed = useContext(SimulationTime);
   const [sunTexture] = useTexture(["/assets/sun_map.jpg"]);
   const sunRef = useRef<THREE.Mesh>(null);
   const lightRef = useRef<THREE.PointLight>(null);
 
-  const sunRotation = useCallback(() => {
-    if (sunRef.current) sunRef.current.rotation.y += 0.00025;
-  }, []);
-
-  useFrame(sunRotation);
+  useFrame((_, delta) => {
+    if (sunRef.current) sunRef.current.rotation.y += 0.015 * Math.min(delta, 0.05) * speed;
+  });
 
   return (
     <mesh ref={sunRef} position={[0, 0, 0]}>
-      <sphereGeometry args={[4, 32, 32]} />
+      <sphereGeometry args={[6, 48, 48]} />
       <meshPhongMaterial
         map={sunTexture}
         emissiveMap={sunTexture}
@@ -26,9 +26,9 @@ const Sun = React.memo(() => {
       <pointLight
         ref={lightRef} // Attach the ref to the point light
         position={[0, 0, 0]}
-        intensity={100} // Increase light intensity
+        intensity={3} // Increase light intensity
         distance={40000} // Extend light distance to cover more planets
-        decay={1} // Control light falloff
+        decay={0} // Control light falloff
         castShadow
       />
     </mesh>
